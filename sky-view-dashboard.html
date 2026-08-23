@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sky View Real Estate Investment Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); color: #333; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header { background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 100%); color: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
+        header h1 { font-size: 2.2em; margin-bottom: 10px; color: #7c3aed; }
+        header p { font-size: 1em; color: #e0e0e0; }
+        .section { background: white; border-radius: 10px; margin-bottom: 25px; padding: 25px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); border-left: 5px solid #7c3aed; }
+        .section h2 { color: #1a3a3a; margin-bottom: 20px; font-size: 1.8em; display: flex; align-items: center; }
+        .section h2::before { content: ''; display: inline-block; width: 10px; height: 10px; background: #7c3aed; border-radius: 50%; margin-right: 12px; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .summary-card { background: linear-gradient(135deg, #f3e8ff 0%, #ede9fe 100%); padding: 20px; border-radius: 8px; border-left: 4px solid #7c3aed; text-align: center; }
+        .summary-card h3 { color: #1a3a3a; font-size: 0.9em; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .summary-card .value { font-size: 2em; color: #7c3aed; font-weight: bold; }
+        .summary-card .label { color: #666; font-size: 0.85em; margin-top: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        table thead { background: #7c3aed; color: white; }
+        table th { padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #7c3aed; }
+        table td { padding: 12px; border-bottom: 1px solid #e0e0e0; }
+        table tbody tr:hover { background: #f9f9f9; }
+        .amount { text-align: right; font-family: 'Courier New', monospace; font-weight: 600; color: #7c3aed; }
+        .total-row { background: #f0f0f0; font-weight: bold; border-top: 2px solid #7c3aed; }
+        .status-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; }
+        .status-active { background: #dcfce7; color: #166534; }
+        .status-planning { background: #fef3c7; color: #92400e; }
+        .project-card { background: linear-gradient(135deg, #f3e8ff 0%, #ede9fe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 2px solid #7c3aed; }
+        .project-card h4 { color: #1a3a3a; margin-bottom: 8px; }
+        .project-card .amount { font-size: 1.3em; color: #7c3aed; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
+        .investment-card { background: #f9f9f9; padding: 15px; border-radius: 8px; border-left: 4px solid #7c3aed; }
+        .investment-card h4 { color: #1a3a3a; margin-bottom: 8px; font-size: 0.95em; }
+.investment-card p { color: #666; font-size: 0.9em; margin-bottom: 5px; }
+        .investment-amount { font-size: 1.4em; color: #7c3aed; font-weight: bold; margin-top: 10px; }
+        .investment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 20px; }
+        .recipient-card { background: white; padding: 15px; border-radius: 8px; border: 2px solid #e0e0e0; border-top: 4px solid #7c3aed; text-align: center; }
+        .recipient-name { font-weight: bold; color: #1a3a3a; margin-bottom: 10px; font-size: 1.1em; }
+        .recipient-amount { font-size: 1.4em; color: #7c3aed; font-weight: bold; }
+        .recipient-label { font-size: 0.85em; color: #666; margin-top: 8px; }
+        .recipient-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .notes { background: #f3e8ff; padding: 15px; border-radius: 8px; border-left: 4px solid #7c3aed; margin-top: 20px; font-size: 0.95em; color: #333; }
+        .notes h4 { color: #7c3aed; margin-bottom: 10px; }
+        .notes li { margin-left: 20px; margin-bottom: 5px; }
+        footer { text-align: center; color: white; padding: 20px; margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.2); }
+        @media (max-width: 768px) { header h1 { font-size: 1.8em; } .summary-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏢 Sky View Real Estate Investment Dashboard</h1>
+            <p>Investment Details & Project Management | আপডেট: সর্বশেষ</p>
+        </header>
+
+        <section class="section">
+            <h2>📊 সারাংশ (Overview)</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>মোট বিনিয়োগ</h3>
+                    <div class="value">৳699,400</div>
+                    <div class="label">সব প্রজেক্টে</div>
+                </div>
+                <div class="summary-card">
+                    <h3>লেনদেন সংখ্যা</h3>
+                    <div class="value">7</div>
+                    <div class="label">মোট</div>
+                </div>
+                <div class="summary-card">
+                    <h3>সক্রিয় প্রজেক্ট</h3>
+                    <div class="value">3</div>
+                    <div class="label">চলমান</div>
+                </div>
+                <div class="summary-card">
+                    <h3>প্রধান লক্ষ্য</h3>
+                    <div class="value">Nahar Kuthir</div>
+                    <div class="label">বৃহত্তম প্রজেক্ট</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>💰 বিনিয়োগ লেনদেন (Investment Transactions)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>তারিখ</th>
+                        <th>প্রাপক</th>
+                        <th class="amount">পরিমাণ (৳)</th>
+                        <th>বর্ণনা</th>
+                        <th>প্রজেক্ট নাম</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>31-12-2025</td>
+                        <td><strong>Al-Arafah</strong></td>
+                        <td class="amount">200,000</td>
+                        <td>Transfer by online</td>
+                        <td><strong>Azman</strong></td>
+                    </tr>
+                    <tr>
+                        <td>18-10-2025</td>
+                        <td><strong>Zia</strong></td>
+                        <td class="amount">50,000</td>
+                        <td>—</td>
+                        <td><strong>Nahar Kuthir</strong></td>
+                    </tr>
+                    <tr>
+                        <td>29-09-2025</td>
+                        <td><strong>Zia</strong></td>
+                        <td class="amount">20,000</td>
+                        <td>Zahid Bhai Mobile</td>
+                        <td><strong>SKY VIEW COMPANY</strong></td>
+                    </tr>
+<tr>
+                        <td>25-09-2025</td>
+                        <td><strong>Rana</strong></td>
+                        <td class="amount">100,000</td>
+                        <td>Transferred to Rana Bhai A/C</td>
+                        <td><strong>Nahar Kuthir</strong></td>
+                    </tr>
+                    <tr>
+                        <td>20-09-2025</td>
+                        <td><strong>Zia</strong></td>
+                        <td class="amount">100,000</td>
+                        <td>Alamgir For Planning</td>
+                        <td><strong>Nahar Kuthir</strong></td>
+                    </tr>
+                    <tr>
+                        <td>01-09-2025</td>
+                        <td><strong>Zia</strong></td>
+                        <td class="amount">200,000</td>
+                        <td>Paid Alamgir for Planning</td>
+                        <td><strong>Nahar Kuthir</strong></td>
+                    </tr>
+                    <tr>
+                        <td>12-08-2025</td>
+                        <td><strong>Zia</strong></td>
+                        <td class="amount">29,400</td>
+                        <td>—</td>
+                        <td><strong>Nahar Kuthir</strong></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="2"><strong>মোট</strong></td>
+                        <td class="amount"><strong>699,400</strong></td>
+                        <td colspan="2">—</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>🏗️ প্রজেক্ট ভাঙ্গাভাঙ্গি (Projects Breakdown)</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h4>Nahar Kuthir</h4>
+                    <p style="color: #666; margin-bottom: 10px;">নাহার কুথীর</p>
+                    <div class="amount">৳479,400</div>
+                    <p style="color: #666; font-size: 0.85em; margin-top: 8px;">5 লেনদেন</p>
+                    <span class="status-badge status-planning">পরিকল্পনা চলছে</span>
+                </div>
+
+                <div class="project-card">
+                    <h4>Azman</h4>
+                    <p style="color: #666; margin-bottom: 10px;">আজমান</p>
+                    <div class="amount">৳200,000</div>
+                    <p style="color: #666; font-size: 0.85em; margin-top: 8px;">1 লেনদেন</p>
+                    <span class="status-badge status-active">সক্রিয়</span>
+                </div>
+
+                <div class="project-card">
+                    <h4>SKY VIEW COMPANY</h4>
+                    <p style="color: #666; margin-bottom: 10px;">কোম্পানি হেড</p>
+                    <div class="amount">৳20,000</div>
+                    <p style="color: #666; font-size: 0.85em; margin-top: 8px;">1 লেনদেন</p>
+                    <span class="status-badge status-active">সক্রিয়</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>👤 প্রাপক বিস্তারিত (Recipient Details)</h2>
+            <div class="recipient-cards">
+                <div class="recipient-card">
+                    <div class="recipient-name">🏛️ Al-Arafah</div>
+                    <div class="recipient-amount">৳200,000</div>
+                    <div class="recipient-label">Azman প্রজেক্টে</div>
+                    <div class="recipient-label" style="margin-top: 8px;">অনলাইন ট্রান্সফার</div>
+                </div>
+
+                <div class="recipient-card">
+                    <div class="recipient-name">👨 Zia (জিয়া)</div>
+                    <div class="recipient-amount">৳399,400</div>
+                    <div class="recipient-label">5 লেনদেন</div>
+                    <div class="recipient-label" style="margin-top: 8px;">প্রধান তহবিল ধারক</div>
+                </div>
+
+                <div class="recipient-card">
+                    <div class="recipient-name">👤 Rana</div>
+                    <div class="recipient-amount">৳100,000</div>
+<div class="recipient-label">Nahar Kuthir প্রজেক্টে</div>
+                    <div class="recipient-label" style="margin-top: 8px;">Account Transfer</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>💳 প্রাপক অনুযায়ী বিনিয়োগ (Investment by Recipient)</h2>
+            <div class="investment-grid">
+                <div class="investment-card">
+                    <h4>Zia (জিয়া)</h4>
+                    <p><strong>৳399,400</strong> (57% of total)</p>
+                    <p style="margin-top: 10px; color: #555;">লেনদেন:</p>
+                    <ul style="margin-left: 15px; color: #666; font-size: 0.9em;">
+                        <li>Nahar Kuthir: ৳379,400</li>
+                        <li>SKY VIEW CO: ৳20,000</li>
+                    </ul>
+                </div>
+
+                <div class="investment-card">
+                    <h4>Al-Arafah (আল-আরাফাহ)</h4>
+                    <p><strong>৳200,000</strong> (29% of total)</p>
+                    <p style="margin-top: 10px; color: #555;">প্রজেক্ট:</p>
+                    <ul style="margin-left: 15px; color: #666; font-size: 0.9em;">
+                        <li>Azman প্রজেক্টে</li>
+                        <li>অনলাইন ট্রান্সফার</li>
+                    </ul>
+                </div>
+
+                <div class="investment-card">
+                    <h4>Rana (রানা)</h4>
+                    <p><strong>৳100,000</strong> (14% of total)</p>
+                    <p style="margin-top: 10px; color: #555;">প্রজেক্ট:</p>
+                    <ul style="margin-left: 15px; color: #666; font-size: 0.9em;">
+                        <li>Nahar Kuthir প্রজেক্টে</li>
+                        <li>Account Transfer</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="notes">
+                <h4>📌 গুরুত্বপূর্ণ তথ্য (Important Notes)</h4>
+                <ul>
+                    <li><strong>মোট বিনিয়োগ:</strong> ৳699,400</li>
+                    <li><strong>প্রধান প্রজেক্ট:</strong> Nahar Kuthir (68.6%)</li>
+                    <li><strong>প্রধান বিনিয়োগকারী:</strong> Zia (57%)</li>
+                    <li><strong>পরিকল্পনা খরচ:</strong> Alamgir-এর পরিকল্পনার জন্য ৳300,000</li>
+                    <li><strong>তারিখ রেঞ্জ:</strong> আগস্ট ২০२५ - ডিসেম্বর २०२५</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>Sky View Real Estate Dashboard v1.0</strong></p>
+            <p>Built by Hadi | Last updated: 23 August 2026</p>
+        </footer>
+    </div>
+</body>
+</html>
