@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDDL Business Ledger Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); color: #333; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header { background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 100%); color: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
+        header h1 { font-size: 2.2em; margin-bottom: 10px; color: #4ade80; }
+        header p { font-size: 1em; color: #e0e0e0; }
+        .section { background: white; border-radius: 10px; margin-bottom: 25px; padding: 25px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); border-left: 5px solid #16a34a; }
+        .section h2 { color: #1a3a3a; margin-bottom: 20px; font-size: 1.8em; display: flex; align-items: center; }
+        .section h2::before { content: ''; display: inline-block; width: 10px; height: 10px; background: #16a34a; border-radius: 50%; margin-right: 12px; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .summary-card { background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%); padding: 20px; border-radius: 8px; border-left: 4px solid #16a34a; text-align: center; }
+        .summary-card h3 { color: #1a3a3a; font-size: 0.9em; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .summary-card .value { font-size: 2em; color: #16a34a; font-weight: bold; }
+        .summary-card .label { color: #666; font-size: 0.85em; margin-top: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        table thead { background: #1a3a3a; color: white; }
+        table th { padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #16a34a; }
+        table td { padding: 12px; border-bottom: 1px solid #e0e0e0; }
+        table tbody tr:hover { background: #f9f9f9; }
+        .amount { text-align: right; font-family: 'Courier New', monospace; font-weight: 600; color: #16a34a; }
+        .total-row { background: #f0f0f0; font-weight: bold; border-top: 2px solid #16a34a; }
+        .balance-positive { color: #16a34a; font-weight: bold; }
+        .balance-zero { color: #666; font-weight: bold; }
+        .status-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 0.85em; font-weight: bold; }
+        .status-settled { background: #dcfce7; color: #166534; }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .partner-card { background: white; padding: 15px; border-radius: 8px; border: 2px solid #e0e0e0; border-top: 4px solid #16a34a; }
+        .partner-name { font-weight: bold; color: #1a3a3a; margin-bottom: 10px; font-size: 1.1em; }
+        .partner-info { font-size: 0.9em; color: #666; margin-bottom: 8px; }
+        .partner-balance { font-size: 1.3em; font-weight: bold; margin-top: 10px; padding-top: 10px; border-top: 1px solid #e0e0e0; }
+        .partner-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .rupnagar-section { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); padding: 20px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #ff9800; }
+        .rupnagar-section h3 { color: #e65100; margin-bottom: 15px; }
+        .notes { background: #fffacd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107; margin-top: 20px; font-size: 0.95em; color: #333; }
+        .notes h4 { color: #d4af37; margin-bottom: 10px; }
+        .notes li { margin-left: 20px; margin-bottom: 5px; }
+footer { text-align: center; color: white; padding: 20px; margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.2); }
+        @media (max-width: 768px) { header h1 { font-size: 1.8em; } table { font-size: 0.9em; } .summary-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 CDDL Business Ledger Dashboard</h1>
+            <p>Old CDDL Investment & Profit Return Summary | আপডেট: ২৪ মে ২০२६</p>
+        </header>
+
+        <section class="section">
+            <h2>📊 সারাংশ (Overview)</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>মোট বিনিয়োগ</h3>
+                    <div class="value">৳२२००००००</div>
+                    <div class="label">সব অংশীদার</div>
+                </div>
+                <div class="summary-card">
+                    <h3>মোট মুনাফা</h3>
+                    <div class="value">৳१५००००</div>
+                    <div class="label">বিতরণ করা</div>
+                </div>
+                <div class="summary-card">
+                    <h3>পরিশোধ করা</h3>
+                    <div class="value">৳८६९६०००</div>
+                    <div class="label">সব পক্ষ থেকে</div>
+                </div>
+                <div class="summary-card">
+                    <h3>বাকি থাকা</h3>
+                    <div class="value">৳१४८०४०००</div>
+                    <div class="label">মোট বকেয়া</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>👥 অংশীদার হিসাব (Partner Summary)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>নাম</th>
+                        <th class="amount">মোট বিনিয়োগ (৳)</th>
+                        <th class="amount">মুনাফা (৳)</th>
+                        <th class="amount">পেমেন্ট (৳)</th>
+                        <th class="amount">বাকি (৳)</th>
+                        <th>স্ট্যাটাস</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>রানা</strong></td>
+                        <td class="amount">0</td>
+                        <td class="amount">400,000</td>
+                        <td class="amount">400,000</td>
+                        <td class="amount balance-zero">0</td>
+                        <td><span class="status-badge status-settled">নিষ্পত্তি</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>জিয়া</strong></td>
+                        <td class="amount">7,500,000</td>
+                        <td class="amount">400,000</td>
+                        <td class="amount">1,450,000</td>
+                        <td class="amount balance-positive">6,450,000</td>
+                        <td><span class="status-badge status-pending">বকেয়া</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>জাহিদ</strong></td>
+                        <td class="amount">0</td>
+                        <td class="amount">300,000</td>
+                        <td class="amount">300,000</td>
+                        <td class="amount balance-zero">0</td>
+                        <td><span class="status-badge status-settled">নিষ্পত্তি</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>বাসার</strong></td>
+                        <td class="amount">10,000,000</td>
+                        <td class="amount">400,000</td>
+                        <td class="amount">4,546,000</td>
+                        <td class="amount balance-positive">5,854,000</td>
+                        <td><span class="status-badge status-pending">বকেয়া</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>পারভেজ</strong></td>
+                        <td class="amount">2,500,000</td>
+                        <td class="amount">0</td>
+                        <td class="amount">2,000,000</td>
+<td class="amount balance-positive">500,000</td>
+                        <td><span class="status-badge status-pending">বকেয়া</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>শাহজাহান</strong></td>
+                        <td class="amount">2,000,000</td>
+                        <td class="amount">0</td>
+                        <td class="amount">0</td>
+                        <td class="amount balance-positive">2,000,000</td>
+                        <td><span class="status-badge status-pending">বকেয়া</span></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td><strong>মোট</strong></td>
+                        <td class="amount">22,000,000</td>
+                        <td class="amount">1,500,000</td>
+                        <td class="amount">8,696,000</td>
+                        <td class="amount balance-positive">14,804,000</td>
+                        <td>—</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>📋 অংশীদার বিবরণী (Partner Details)</h2>
+            <div class="partner-cards">
+                <div class="partner-card">
+                    <div class="partner-name">✅ রানা</div>
+                    <div class="partner-info">বিনিয়োগ: ০</div>
+                    <div class="partner-info">মুনাফা: ৳400,000</div>
+                    <div class="partner-balance">বাকি: ৳0 (নিষ্পত্ত)</div>
+                </div>
+
+                <div class="partner-card">
+                    <div class="partner-name">⚠️ জিয়া</div>
+                    <div class="partner-info">বিনিয়োগ: ৳7,500,000</div>
+                    <div class="partner-info">মুনাফা: ৳400,000</div>
+                    <div class="partner-balance balance-positive">বাকি: ৳6,450,000</div>
+                </div>
+
+                <div class="partner-card">
+                    <div class="partner-name">✅ জাহিদ</div>
+                    <div class="partner-info">বিনিয়োগ: ០</div>
+                    <div class="partner-info">মুনাফা: ৳300,000</div>
+                    <div class="partner-balance">বাকি: ৳0 (নিষ্পত্ত)</div>
+                </div>
+
+                <div class="partner-card">
+                    <div class="partner-name">⚠️ বাসার</div>
+                    <div class="partner-info">বিনিয়োগ: ৳10,000,000</div>
+                    <div class="partner-info">মুনাফা: ৳400,000</div>
+                    <div class="partner-balance balance-positive">বাকি: ৳5,854,000</div>
+                </div>
+
+                <div class="partner-card">
+                    <div class="partner-name">⚠️ পারভেজ</div>
+                    <div class="partner-info">বিনিয়োগ: ৳2,500,000</div>
+                    <div class="partner-info">মুনাফা: ०</div>
+                    <div class="partner-balance balance-positive">বাকি: ৳500,000</div>
+                </div>
+
+                <div class="partner-card">
+                    <div class="partner-name">⚠️ শাহজাহান</div>
+                    <div class="partner-info">বিনিয়োগ: ৳2,000,000</div>
+                    <div class="partner-info">মুনাফা: ०</div>
+                    <div class="partner-balance balance-positive">বাকি: ৳2,000,000</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="rupnagar-section">
+                <h3>🌟 রূপনগর বিনিয়োগ বিতরণ (Rupnagar Investment)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>হিসাব</th>
+                            <th>তারিখ</th>
+                            <th class="amount">আবুল বাসার (৳)</th>
+                            <th class="amount">জিয়া (৳)</th>
+                            <th class="amount">মোট (৳)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>१ম हिसाब</strong></td>
+                            <td>३१-०१-२०२५</td>
+<td class="amount">1,300,000</td>
+                            <td class="amount">300,000</td>
+                            <td class="amount"><strong>1,600,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>२य हिसाब</strong></td>
+                            <td>३१-०७-२०२५</td>
+                            <td class="amount">345,553</td>
+                            <td class="amount">345,553</td>
+                            <td class="amount"><strong>691,106</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>३य हिसाब</strong></td>
+                            <td>३१-०७-२०२५</td>
+                            <td class="amount">236,981</td>
+                            <td class="amount">236,981</td>
+                            <td class="amount"><strong>473,962</strong></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="2"><strong>রূপনগর মোট</strong></td>
+                            <td class="amount">1,882,534</td>
+                            <td class="amount">882,534</td>
+                            <td class="amount"><strong>2,765,068</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="notes">
+                <h4>📌 গুরুত্বপূর্ণ তথ্য (Important Notes)</h4>
+                <ul>
+                    <li><strong>নিষ্পত্ত অংশীদার:</strong> রানা ও জাহিদ সম্পূর্ণ পেমেন্ট পেয়েছেন</li>
+                    <li><strong>বকেয়া অংশীদার:</strong> জিয়া (৳6.45M), বাসার (৳5.85M), পারভেজ (৳0.5M), শাহজাহান (৳2M)</li>
+                    <li><strong>মোট বকেয়া:</strong> ৳14,804,000</li>
+                    <li><strong>সক্রিয় প্রজেক্ট:</strong> কাকরাইল, ডি-५१, মিরপুর १२ই, রূপনগর</li>
+                    <li><strong>ডেটা আপডেট:</strong> २४ মে २०२६ পর्यন्त</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>CDDL Ledger Dashboard v1.0</strong></p>
+            <p>Built by Hadi | Last updated: 23 August 2026</p>
+        </footer>
+    </div>
+</body>
+</html>
