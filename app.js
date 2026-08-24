@@ -28,15 +28,15 @@
      NAVIGATION
      ============================================================ */
   const TITLES = {
-    home: ['হোম', 'সব কিছু এক নজরে'],
+    home: ['Home', 'Everything at a glance'],
     nexa: ['Nexa AI Solutions', 'Automation project board'],
     pipeline: ['Client Pipeline', 'Lead → Prospect → Client'],
-    islamic: ['ইসলামিক রিডার', 'কুরআন · হাদীস · সাহাবা'],
-    news: ['সংবাদ', 'বাংলাদেশ · আন্তর্জাতিক · প্রযুক্তি'],
-    ideas: ['আইডিয়া ব্যাংক', 'অটোমেশন ও ব্যবসার আইডিয়া'],
+    islamic: ['Islamic Reader', 'Quran · Hadith · Sahaba'],
+    news: ['News', 'Bangladesh · International · Tech'],
+    ideas: ['Idea Bank', 'Automation & business ideas'],
     todo: ['To-Do List', 'Actionable tasks from ideas'],
-    invest: ['বিনিয়োগ', 'CDDL · Sky View · Amanah · Nexa'],
-    settings: ['সেটিংস', 'ব্যাকআপ ও কনটেন্ট সোর্স']
+    invest: ['Investments', 'CDDL · Sky View · Amanah · Nexa'],
+    settings: ['Settings', 'Backup & content sources']
   };
 
   function goto(page) {
@@ -85,7 +85,7 @@
   /* ---------- clock ---------- */
   function clock() {
     const now = new Date();
-    const d = now.toLocaleDateString('bn-BD', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    const d = now.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
     const t = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
     $('clock').textContent = d + ' · ' + t;
   }
@@ -99,16 +99,16 @@
 
   function renderQuran() {
     const v = D.quran[qi];
-    if (!v) { $('qSrc').textContent = 'কোনো ডেটা নেই'; return; }
-    $('qSrc').textContent = v.surah + ' — আয়াত ' + v.key.split(':')[1];
+    if (!v) { $('qSrc').textContent = 'No data'; return; }
+    $('qSrc').textContent = v.surah + ' · Ayah ' + v.key.split(':')[1];
     $('qArabic').textContent = v.arabic;
     $('qBangla').textContent = v.bangla;
     $('qCount').textContent = (qi + 1) + ' / ' + D.quran.length;
   }
   function renderHadith() {
     const h = D.hadith[hi];
-    if (!h) { $('hSrc').textContent = 'কোনো ডেটা নেই'; return; }
-    $('hSrc').textContent = h.collection + ' — হাদীস নং ' + h.number + ' · ' + h.grade;
+    if (!h) { $('hSrc').textContent = 'No data'; return; }
+    $('hSrc').textContent = h.collection + ' · Hadith #' + h.number + ' · ' + h.grade;
     $('hText').textContent = h.text;
     $('hCount').textContent = (hi + 1) + ' / ' + D.hadith.length;
   }
@@ -124,7 +124,7 @@
      NEWS
      ============================================================ */
   function newsHTML(list) {
-    if (!list || !list.length) return '<div class="empty">কোনো সংবাদ নেই</div>';
+    if (!list || !list.length) return '<div class="empty">No news right now</div>';
     return list.map(n => `
       <div class="news">
         <a href="${esc(n.link)}" target="_blank" rel="noopener">${esc(n.title)}</a>
@@ -136,8 +136,8 @@
     $('newsBD').innerHTML = newsHTML(N.bangladesh);
     $('newsIntl').innerHTML = newsHTML(N.international);
     $('newsTech').innerHTML = newsHTML(N.tech);
-    $('newsMeta').textContent = 'সর্বশেষ আপডেট: ' + (N._updated || '—') +
-      ' · উৎস: প্রথম আলো, BBC বাংলা, TechCrunch';
+    $('newsMeta').textContent = 'Last updated: ' + (N._updated || '—') +
+      ' · Sources: Prothom Alo, BBC Bangla, TechCrunch · auto-refresh every 6h';
     const head = [].concat(N.bangladesh || []).slice(0, 3)
       .concat((N.tech || []).slice(0, 2));
     $('homeNews').innerHTML = newsHTML(head);
@@ -146,11 +146,21 @@
   /* ============================================================
      IDEA BANK
      ============================================================ */
-  const CAT_TAG = { 'অটোমেশন': 'g', 'ব্যবসা': 'b', 'প্রোডাক্ট': 'p', 'মার্কেটিং': 'y', 'ব্যক্তিগত': '' };
+  const CAT_TAG = { 'Automation': 'g', 'Business': 'b', 'Product': 'p', 'Marketing': 'y', 'Personal': '' };
+  // migrate any Bangla categories saved before the English switch
+  const CAT_MIGRATE = { 'অটোমেশন': 'Automation', 'ব্যবসা': 'Business', 'প্রোডাক্ট': 'Product', 'মার্কেটিং': 'Marketing', 'ব্যক্তিগত': 'Personal', 'সাধারণ': 'General' };
+  (function migrate() {
+    let touched = false;
+    S.ideas.forEach(i => {
+      if (CAT_MIGRATE[i.cat]) { i.cat = CAT_MIGRATE[i.cat]; touched = true; }
+      if (CAT_MIGRATE[i.biz]) { i.biz = CAT_MIGRATE[i.biz]; touched = true; }
+    });
+    if (touched) save();
+  })();
 
   $('idAdd').onclick = () => {
     const title = $('idTitle').value.trim();
-    if (!title) { alert('আইডিয়ার শিরোনাম লিখুন'); return; }
+    if (!title) { alert('Enter an idea title'); return; }
     S.ideas.unshift({
       id: uid(), title, cat: $('idCat').value, biz: $('idBiz').value,
       body: $('idBody').value.trim(), ts: Date.now(), promoted: false
@@ -178,12 +188,12 @@
         ${i.body ? `<div class="body">${esc(i.body)}</div>` : ''}
         <div class="foot">
           <span class="tag">${esc(i.biz)}</span>
-          <span style="font-size:.74rem;color:var(--muted)">${new Date(i.ts).toLocaleDateString('bn-BD')}</span>
-          ${i.promoted ? '<span class="tag g">✓ টাস্কে গেছে</span>'
-        : `<button class="btn sm" data-promote="${i.id}">→ To-Do তে পাঠান</button>`}
-          <button class="btn sm ghost" data-delidea="${i.id}">মুছুন</button>
+          <span style="font-size:.74rem;color:var(--muted)">${new Date(i.ts).toLocaleDateString('en-GB')}</span>
+          ${i.promoted ? '<span class="tag g">✓ In To-Do</span>'
+ : `<button class="btn sm" data-promote="${i.id}">→ Send to To-Do</button>`}
+   <button class="btn sm ghost" data-delidea="${i.id}">Delete</button>
         </div>
-      </div>`).join('') : '<div class="empty">এখনো কোনো আইডিয়া নেই। উপরে যোগ করুন।</div>';
+      </div>`).join('') : '<div class="empty">No ideas yet — capture one above.</div>';
   }
 
   /* ============================================================
@@ -334,11 +344,11 @@
       if (idea) {
         S.tasks.unshift({
           id: uid(), title: idea.title, pri: 'med',
-          biz: idea.biz === 'সাধারণ' ? 'Personal' : idea.biz,
+          biz: idea.biz === 'General' ? 'Personal' : idea.biz,
           due: '', done: false, ts: Date.now()
         });
         idea.promoted = true; save(); renderIdeas(); renderTasks(); renderHome();
-        alert('✅ To-Do তে যোগ হয়েছে');
+        alert('✅ Added to To-Do list');
       }
     }
     if ((d = t.dataset.toggle)) {
@@ -374,18 +384,17 @@
      HOME — HERO
      ============================================================ */
   function greetWord(h) {
-    if (h < 5) return 'শুভ রাত্রি';
-    if (h < 12) return 'শুভ সকাল';
-    if (h < 16) return 'শুভ দুপুর';
-    if (h < 19) return 'শুভ বিকেল';
-    return 'শুভ সন্ধ্যা';
+    if (h < 5) return 'Good night';
+    if (h < 12) return 'Good morning';
+    if (h < 17) return 'Good afternoon';
+    return 'Good evening';
   }
 
   function renderHero() {
     const now = new Date();
-    $('heroDate').textContent = now.toLocaleDateString('bn-BD',
+    $('heroDate').textContent = now.toLocaleDateString('en-GB',
       { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-    $('heroGreet').textContent = greetWord(now.getHours()) + ', জিয়া ভাই';
+    $('heroGreet').textContent = greetWord(now.getHours()) + ', Zia';
 
     const today = new Date().toISOString().slice(0, 10);
     const openT = S.tasks.filter(t => !t.done);
@@ -397,15 +406,15 @@
     // subtitle
     let sub;
     if (!S.tasks.length && !S.ideas.length) {
-      sub = 'শুরু করুন — উপরের বক্সে প্রথম আইডিয়া বা টাস্ক লিখুন।';
+      sub = 'Start here — capture your first idea or task in the box above.';
     } else if (!openT.length) {
-      sub = 'সব টাস্ক শেষ 🎉 নতুন কিছু যোগ করুন বা আইডিয়া ব্যাংক দেখুন।';
+      sub = 'All tasks cleared 🎉 Add something new or review the Idea Bank.';
     } else if (overdue) {
-      sub = `${overdue}টি টাস্কের সময় পেরিয়ে গেছে — আগে সেগুলো দেখুন।`;
+      sub = `${overdue} task${overdue > 1 ? 's are' : ' is'} overdue — clear those first.`;
     } else if (high) {
-      sub = `${high}টি high-priority কাজ অপেক্ষা করছে। আজকের ফোকাস ঠিক করুন।`;
+      sub = `${high} high-priority task${high > 1 ? 's' : ''} waiting. Set today's focus.`;
     } else {
-      sub = `${openT.length}টি কাজ বাকি। ধীরে-সুস্থে এগিয়ে যান।`;
+      sub = `${openT.length} task${openT.length > 1 ? 's' : ''} open. Steady progress wins.`;
     }
     $('heroSub').textContent = sub;
 
@@ -433,7 +442,7 @@
     if (!v) { $('qInput').focus(); return; }
     if (kind === 'idea') {
       S.ideas.unshift({
-        id: uid(), title: v, cat: 'অটোমেশন', biz: 'Nexa AI',
+        id: uid(), title: v, cat: 'Automation', biz: 'Nexa AI',
         body: '', ts: Date.now(), promoted: false
       });
     } else {
@@ -465,7 +474,7 @@
 
     const h = D.hadith[dayNum % (D.hadith.length || 1)];
     $('homeHadith').innerHTML = h ? `
-      <div style="font-size:.76rem;color:var(--emerald);font-weight:700">${esc(h.collection)} — নং ${esc(h.number)}</div>
+      <div style="font-size:.76rem;color:var(--emerald);font-weight:700">${esc(h.collection)} · #${esc(h.number)}</div>
       <div style="font-size:.94rem;line-height:1.95;margin-top:10px">${esc(h.text.slice(0, 380))}${h.text.length > 380 ? '…' : ''}</div>`
       : '<div class="empty">—</div>';
 
@@ -488,7 +497,7 @@
           <span class="tag ${CAT_TAG[i.cat] || ''}">${esc(i.cat)}</span>
           <span class="tag">${esc(i.biz)}</span>
         </div>
-      </div>`).join('') : '<div class="empty">এখনো আইডিয়া নেই</div>';
+      </div>`).join('') : '<div class="empty">No ideas yet</div>';
 
     $('kpiProjects').textContent = S.projects.filter(p => p.stage !== 'Idea').length;
     $('kpiPipeline').textContent = '৳' + bn(S.leads.filter(l => l.stage !== 'Client')
@@ -498,7 +507,7 @@
     $('kpiTasks').textContent = openT.length;
     $('kpiTasksHigh').textContent = openT.filter(t => t.pri === 'high').length + ' high priority';
     $('kpiIdeas').textContent = S.ideas.length;
-    $('kpiIdeasAuto').textContent = S.ideas.filter(i => i.cat === 'অটোমেশন').length + ' automation';
+    $('kpiIdeasAuto').textContent = S.ideas.filter(i => i.cat === 'Automation').length + ' automation';
   }
 
   /* ============================================================
@@ -518,13 +527,13 @@
     r.onload = () => {
       try {
         S = Object.assign({}, blank, JSON.parse(r.result));
-        save(); renderAll(); alert('✅ ডেটা ইমপোর্ট হয়েছে');
-      } catch (err) { alert('❌ ফাইলটি পড়া যায়নি'); }
+        save(); renderAll(); alert('✅ Data imported');
+      } catch (err) { alert('❌ Could not read that file'); }
     };
     r.readAsText(f);
   };
   $('btnReset').onclick = () => {
-    if (confirm('সব আইডিয়া, টাস্ক, প্রজেক্ট ও লিড মুছে যাবে। নিশ্চিত?')) {
+    if (confirm('This deletes all ideas, tasks, projects and leads. Are you sure?')) {
       S = Object.assign({}, blank); save(); renderAll();
     }
   };
