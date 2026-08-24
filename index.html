@@ -49,7 +49,12 @@
         <h2 id="pageTitle">Home</h2>
         <div class="meta" id="pageMeta">—</div>
       </div>
-      <div class="meta" id="clock"></div>
+      <div class="topright">
+        <span class="syncbadge" id="syncBadge" title="Cloud sync status">
+          <i class="dot"></i><span id="syncTxt">Local only</span>
+        </span>
+        <div class="meta" id="clock"></div>
+      </div>
     </div>
 
     <div class="content">
@@ -395,11 +400,44 @@
 
       <!-- ---------- SETTINGS ---------- -->
       <section class="page" id="page-settings">
+
         <div class="card" style="margin-bottom:16px">
-          <h3><span class="t">💾 Data Backup</span></h3>
+          <h3><span class="t">☁️ Cloud Sync</span>
+            <span class="counter" id="cloudState">Not signed in</span></h3>
+
+          <div id="cloudOut">
+            <p style="font-size:.87rem;color:var(--muted);line-height:1.7;margin-bottom:12px">
+              Sign in once on each device — laptop, mobile, iPad — and your ideas, tasks,
+              projects and leads stay identical everywhere.
+            </p>
+            <div class="row">
+              <div><label class="fl">Email</label><input id="authEmail" type="email" placeholder="zialiton@gmail.com" autocomplete="username"></div>
+              <div><label class="fl">Password</label><input id="authPass" type="password" placeholder="min 6 characters" autocomplete="current-password"></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+              <button class="btn" id="btnSignIn">Sign in</button>
+              <button class="btn ghost" id="btnSignUp">Create account</button>
+              <span id="authMsg" style="font-size:.83rem"></span>
+            </div>
+          </div>
+
+          <div id="cloudIn" style="display:none">
+            <p style="font-size:.9rem;line-height:1.8;margin-bottom:12px">
+              ✅ Signed in as <strong id="cloudEmail">—</strong><br>
+              <span style="font-size:.83rem;color:var(--muted)">Changes sync automatically. Opens on another device? It pulls the latest.</span>
+            </p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn" id="btnSyncNow">🔄 Sync now</button>
+              <button class="btn ghost" id="btnSignOut">Sign out</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <h3><span class="t">💾 Local Backup</span></h3>
           <p style="font-size:.87rem;color:var(--muted);line-height:1.7;margin-bottom:12px">
-            Your ideas, tasks, projects and leads are stored in this browser (localStorage).
-            To move them to another device, Export the file here and Import it there.
+            A file copy of everything, independent of the cloud. Useful as an offline
+            safety net or to move data between accounts.
           </p>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn" id="btnExport">⬇️ Export (JSON)</button>
@@ -438,7 +476,9 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
 <script src="data.js"></script>
+<script src="sync.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -247,3 +247,25 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600
   .hero-in{justify-content:center;text-align:left}
   .ring,.ring svg{width:104px;height:104px}
 }
+
+/* ---- Cloud sync badge ---- */
+.topright{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.syncbadge{
+  display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:20px;
+  background:#f1f5f9;border:1px solid var(--line);font-size:.76rem;font-weight:600;color:var(--muted);
+  white-space:nowrap
+}
+.syncbadge .dot{width:8px;height:8px;border-radius:50%;background:#94a3b8;flex:0 0 auto}
+.syncbadge.ok{background:#d1fae5;border-color:#6ee7b7;color:#065f46}
+.syncbadge.ok .dot{background:#10b981}
+.syncbadge.busy{background:#fef3c7;border-color:#fcd34d;color:#92400e}
+.syncbadge.busy .dot{background:#f59e0b;animation:pulse 1s ease-in-out infinite}
+.syncbadge.err{background:#fee2e2;border-color:#fca5a5;color:#991b1b}
+.syncbadge.err .dot{background:#ef4444}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.msg-ok{color:var(--emerald);font-weight:600}
+.msg-err{color:var(--danger);font-weight:600}
+@media(max-width:640px){
+  .syncbadge span{display:none}
+  .syncbadge{padding:6px}
+}

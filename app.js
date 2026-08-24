@@ -14,7 +14,10 @@
   let S;
   try { S = Object.assign({}, blank, JSON.parse(localStorage.getItem(LS) || '{}')); }
   catch (e) { S = Object.assign({}, blank); }
-  const save = () => localStorage.setItem(LS, JSON.stringify(S));
+  const save = (deletedId) => {
+    localStorage.setItem(LS, JSON.stringify(S));
+    if (window.CC_SYNC) window.CC_SYNC.markDirty(deletedId);
+  };
   const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -337,7 +340,7 @@
     let d;
 
     if ((d = t.dataset.delidea)) {
-      S.ideas = S.ideas.filter(i => i.id !== d); save(); renderIdeas(); renderHome();
+      S.ideas = S.ideas.filter(i => i.id !== d); save(d); renderIdeas(); renderHome();
     }
     if ((d = t.dataset.promote)) {
       const idea = S.ideas.find(i => i.id === d);
@@ -356,7 +359,7 @@
       if (task) { task.done = !task.done; save(); renderTasks(); renderHome(); }
     }
     if ((d = t.dataset.deltask)) {
-      S.tasks = S.tasks.filter(x => x.id !== d); save(); renderTasks(); renderHome();
+      S.tasks = S.tasks.filter(x => x.id !== d); save(d); renderTasks(); renderHome();
     }
     if ((d = t.dataset.nxmove)) {
       const p = S.projects.find(x => x.id === d);
@@ -366,7 +369,7 @@
       }
     }
     if ((d = t.dataset.nxdel)) {
-      S.projects = S.projects.filter(x => x.id !== d); save(); renderNexa(); renderHome();
+      S.projects = S.projects.filter(x => x.id !== d); save(d); renderNexa(); renderHome();
     }
     if ((d = t.dataset.plmove)) {
       const l = S.leads.find(x => x.id === d);
@@ -376,7 +379,7 @@
       }
     }
     if ((d = t.dataset.pldel)) {
-      S.leads = S.leads.filter(x => x.id !== d); save(); renderPipeline(); renderHome();
+      S.leads = S.leads.filter(x => x.id !== d); save(d); renderPipeline(); renderHome();
     }
   });
 
@@ -537,6 +540,78 @@
       S = Object.assign({}, blank); save(); renderAll();
     }
   };
+
+  /* ============================================================
+     CLOUD SYNC WIRING
+     ============================================================ */
+  function setSyncBadge(text, tone) {
+    const b = $('syncBadge');
+    if (!b) return;
+    b.className = 'syncbadge' + (tone && tone !== 'idle' ? ' ' + tone : '');
+    $('syncTxt').textContent = text;
+  }
+
+  function setAuthUI(u) {
+    const inBox = $('cloudIn'), outBox = $('cloudOut');
+    if (!inBox || !outBox) return;
+    if (u) {
+      outBox.style.display = 'none';
+      inBox.style.display = '';
+      $('cloudEmail').textContent = u.email;
+      $('cloudState').textContent = 'Connected';
+    } else {
+      outBox.style.display = '';
+      inBox.style.display = 'none';
+      $('cloudState').textContent = 'Not signed in';
+      setSyncBadge('Local only', 'idle');
+    }
+  }
+
+  if (window.CC_SYNC) {
+    window.CC_SYNC.init({
+      getState: () => S,
+      setState: merged => {
+        S.ideas = merged.ideas; S.tasks = merged.tasks;
+        S.projects = merged.projects; S.leads = merged.leads;
+        localStorage.setItem(LS, JSON.stringify(S));
+        renderIdeas(); renderTasks(); renderNexa(); renderPipeline(); renderHome();
+      },
+      onStatus: setSyncBadge,
+      onAuth: setAuthUI
+    });
+
+    const msg = (t, cls) => {
+      const m = $('authMsg');
+      if (m) { m.textContent = t; m.className = cls || ''; }
+    };
+
+    $('btnSignIn').onclick = async () => {
+      const e = $('authEmail').value, p = $('authPass').value;
+      if (!e || !p) { msg('Enter email and password', 'msg-err'); return; }
+      msg('Signing in…');
+      try { await window.CC_SYNC.signIn(e, p); msg('✅ Signed in', 'msg-ok'); $('authPass').value = ''; }
+      catch (err) { msg('❌ ' + (err.message || err), 'msg-err'); }
+    };
+
+    $('btnSignUp').onclick = async () => {
+      const e = $('authEmail').value, p = $('authPass').value;
+      if (!e || !p) { msg('Enter email and password', 'msg-err'); return; }
+      if (p.length < 6) { msg('Password must be at least 6 characters', 'msg-err'); return; }
+      msg('Creating account…');
+      try {
+        const r = await window.CC_SYNC.signUp(e, p);
+        if (r && r.session) msg('✅ Account created and signed in', 'msg-ok');
+        else msg('✅ Account created — check your email to confirm, then sign in', 'msg-ok');
+      } catch (err) { msg('❌ ' + (err.message || err), 'msg-err'); }
+    };
+
+    $('btnSignOut').onclick = async () => {
+      await window.CC_SYNC.signOut();
+      msg('Signed out on this device. Local data stays here.', '');
+    };
+
+    $('btnSyncNow').onclick = () => window.CC_SYNC.syncNow();
+  }
 
   /* ---------- boot ---------- */
   function renderAll() {
