@@ -1,84 +1,402 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zia's Automated Dashboard</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); color: #333; min-height: 100vh; }
-        .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-        header { background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 100%); color: white; padding: 30px 20px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
-        header h1 { font-size: 2.5em; margin-bottom: 10px; color: #4ade80; }
-        header p { font-size: 1.1em; color: #e0e0e0; }
-        .section { background: white; border-radius: 10px; margin-bottom: 25px; padding: 25px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); border-left: 5px solid #16a34a; }
-        .section h2 { color: #1a3a3a; margin-bottom: 20px; font-size: 1.8em; display: flex; align-items: center; }
-        .section h2::before { content: ''; display: inline-block; width: 10px; height: 10px; background: #16a34a; border-radius: 50%; margin-right: 12px; }
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e0e0e0; flex-wrap: wrap; }
-        .tab-button { padding: 10px 20px; background: #f5f5f5; border: none; cursor: pointer; font-size: 1em; border-radius: 5px 5px 0 0; transition: all 0.3s ease; font-weight: 500; }
-        .tab-button.active { background: #16a34a; color: white; }
-        .tab-button:hover { background: #10b981; color: white; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .metric-card { background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%); padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #16a34a; }
-        .metric-card h3 { color: #1a3a3a; margin-bottom: 10px; }
-        .metric-value { font-size: 2em; color: #16a34a; font-weight: bold; }
-        .metric-label { color: #666; font-size: 0.9em; margin-top: 5px; }
-        button { padding: 10px 15px; background: #16a34a; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em; transition: all 0.3s ease; }
-        button:hover { background: #10b981; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(22, 163, 74, 0.3); }
-        .placeholder { background: #f0f0f0; padding: 30px; border-radius: 8px; text-align: center; color: #999; }
-        footer { text-align: center; color: #999; padding: 20px; border-top: 1px solid #e0e0e0; margin-top: 50px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zia's Command Centre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
 </head>
 <body>
-    <div class="dashboard-container">
-        <header>
-            <h1>📊 Zia's Automated Dashboard</h1>
-            <p>Personal Cockpit — সকল ব্যবসা, খবর, কাজ এক জায়গায়</p>
-        </header>
+<div class="shell">
 
-        <div class="section">
-            <h2>📊 Business Metrics</h2>
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'amanah-metrics')">Amanah Smart Life</button>
-                <button class="tab-button" onclick="switchTab(event, 'skyview-metrics')">Sky View Real Estate</button>
-                <button class="tab-button" onclick="switchTab(event, 'nexa-metrics')">Nexa AI Solutions</button>
-                <button class="tab-button" onclick="switchTab(event, 'apex-metrics')">APEX Development</button>
-            </div>
-<div id="amanah-metrics" class="tab-content active">
-                <div class="metric-card">
-                    <h3>Today's Orders</h3>
-                    <div class="metric-value">12</div>
-                    <div class="metric-label">Orders today</div>
-                </div>
-            </div>
-            <div id="skyview-metrics" class="tab-content">
-                <div class="placeholder">Sky View data coming soon</div>
-            </div>
-            <div id="nexa-metrics" class="tab-content">
-                <div class="placeholder">Nexa AI data coming soon</div>
-            </div>
-            <div id="apex-metrics" class="tab-content">
-                <div class="placeholder">APEX data coming soon</div>
-            </div>
-        </div>
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <h1>⚡ ZIA'S COMMAND CENTRE</h1>
+      <span>NEXA AI SOLUTIONS · FOCUS</span>
+    </div>
+    <nav class="navlist">
+      <a href="#" class="active" data-page="home"><span class="ico">🏠</span> হোম</a>
 
-        <footer>
-            <p>Zia's Automated Dashboard v1.0 | Built by Hadi</p>
-        </footer>
+      <div class="navgroup">Focus</div>
+      <a href="#" data-page="nexa"><span class="ico">🤖</span> Nexa AI Solutions</a>
+      <a href="#" data-page="pipeline"><span class="ico">🎯</span> Client Pipeline</a>
+
+      <div class="navgroup">Daily</div>
+      <a href="#" data-page="islamic"><span class="ico">📖</span> ইসলামিক রিডার</a>
+      <a href="#" data-page="news"><span class="ico">📰</span> সংবাদ</a>
+
+      <div class="navgroup">Think & Do</div>
+      <a href="#" data-page="ideas"><span class="ico">💡</span> আইডিয়া ব্যাংক</a>
+      <a href="#" data-page="todo"><span class="ico">✅</span> To-Do List</a>
+
+      <div class="navgroup">Money</div>
+      <a href="#" data-page="invest"><span class="ico">💰</span> বিনিয়োগ</a>
+
+      <div class="navgroup">System</div>
+      <a href="#" data-page="settings"><span class="ico">⚙️</span> সেটিংস</a>
+    </nav>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div class="main">
+    <div class="topbar">
+      <button class="burger" id="burger">☰</button>
+      <div>
+        <h2 id="pageTitle">হোম</h2>
+        <div class="meta" id="pageMeta">—</div>
+      </div>
+      <div class="meta" id="clock"></div>
     </div>
 
-    <script>
-        function switchTab(event, tabName) {
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active'));
-            const buttons = document.querySelectorAll('.tab-button');
-            buttons.forEach(button => button.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-        }
-    </script>
+    <div class="content">
+
+      <!-- ---------- HOME ---------- -->
+      <section class="page active" id="page-home">
+        <div class="grid g4" style="margin-bottom:18px">
+          <div class="card stat">
+            <div class="lbl">Nexa · Active Projects</div>
+            <div class="val" id="kpiProjects">0</div>
+            <div class="sub">automation builds</div>
+          </div>
+          <div class="card stat gold">
+            <div class="lbl">Pipeline Value</div>
+            <div class="val" id="kpiPipeline">৳0</div>
+            <div class="sub" id="kpiLeads">0 leads</div>
+          </div>
+          <div class="card stat navy">
+            <div class="lbl">Open Tasks</div>
+            <div class="val" id="kpiTasks">0</div>
+            <div class="sub" id="kpiTasksHigh">0 high priority</div>
+          </div>
+          <div class="card stat warn">
+            <div class="lbl">Ideas Captured</div>
+            <div class="val" id="kpiIdeas">0</div>
+            <div class="sub" id="kpiIdeasAuto">0 automation</div>
+          </div>
+        </div>
+
+        <div class="grid g2">
+          <!-- Daily Islamic -->
+          <div class="card">
+            <h3><span class="t">📖 আজকের আয়াত</span>
+              <button class="btn sm ghost" data-goto="islamic">সব দেখুন</button></h3>
+            <div id="homeQuran"></div>
+          </div>
+
+          <!-- Daily hadith -->
+          <div class="card">
+            <h3><span class="t">📜 আজকের হাদীস</span>
+              <button class="btn sm ghost" data-goto="islamic">সব দেখুন</button></h3>
+            <div id="homeHadith"></div>
+          </div>
+
+          <!-- Today tasks -->
+          <div class="card">
+            <h3><span class="t">✅ Today's Tasks</span>
+              <button class="btn sm ghost" data-goto="todo">Manage</button></h3>
+            <div id="homeTasks"></div>
+          </div>
+
+          <!-- Recent ideas -->
+          <div class="card">
+            <h3><span class="t">💡 সাম্প্রতিক আইডিয়া</span>
+              <button class="btn sm ghost" data-goto="ideas">সব দেখুন</button></h3>
+            <div id="homeIdeas"></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h3><span class="t">📰 আজকের শিরোনাম</span>
+            <button class="btn sm ghost" data-goto="news">বিস্তারিত</button></h3>
+          <div id="homeNews"></div>
+        </div>
+      </section>
+
+      <!-- ---------- NEXA AI ---------- -->
+      <section class="page" id="page-nexa">
+        <div class="grid g4" style="margin-bottom:18px">
+          <div class="card stat"><div class="lbl">Automation Projects</div><div class="val" id="nxTotal">0</div><div class="sub">total in board</div></div>
+          <div class="card stat navy"><div class="lbl">Deployed</div><div class="val" id="nxDeployed">0</div><div class="sub">live for clients</div></div>
+          <div class="card stat gold"><div class="lbl">Hours Saved / mo</div><div class="val" id="nxHours">0</div><div class="sub">estimated</div></div>
+          <div class="card stat warn"><div class="lbl">In Development</div><div class="val" id="nxDev">0</div><div class="sub">work in progress</div></div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <h3><span class="t">➕ New Automation Project</span></h3>
+          <div class="row">
+            <div><label class="fl">Project name</label><input id="nxName" placeholder="e.g. RMG order-tracking bot"></div>
+            <div><label class="fl">Client / Target</label><input id="nxClient" placeholder="e.g. Apex Spinning Mills"></div>
+          </div>
+          <div class="row">
+            <div><label class="fl">Category</label>
+              <select id="nxCat">
+                <option>Internal Automation</option><option>RMG</option><option>Real Estate</option>
+                <option>HR System</option><option>Sales / CRM</option><option>Other</option>
+              </select></div>
+            <div><label class="fl">Est. hours saved / month</label><input id="nxSaved" type="number" placeholder="40"></div>
+            <div style="flex:0 0 auto;display:flex;align-items:flex-end"><button class="btn" id="nxAdd">Add Project</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="t">🔧 Automation Project Board</span></h3>
+          <div class="kanban" id="nxBoard"></div>
+        </div>
+      </section>
+
+      <!-- ---------- PIPELINE ---------- -->
+      <section class="page" id="page-pipeline">
+        <div class="grid g4" style="margin-bottom:18px">
+          <div class="card stat"><div class="lbl">Total Leads</div><div class="val" id="plTotal">0</div><div class="sub">in pipeline</div></div>
+          <div class="card stat gold"><div class="lbl">Pipeline Value</div><div class="val" id="plValue">৳0</div><div class="sub">weighted opportunity</div></div>
+          <div class="card stat navy"><div class="lbl">Clients Won</div><div class="val" id="plWon">0</div><div class="sub">converted</div></div>
+          <div class="card stat warn"><div class="lbl">Proposals Out</div><div class="val" id="plProp">0</div><div class="sub">awaiting reply</div></div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <h3><span class="t">➕ Add Lead</span></h3>
+          <div class="row">
+            <div><label class="fl">Business name</label><input id="plBiz" placeholder="Company name"></div>
+            <div><label class="fl">Contact person</label><input id="plName" placeholder="Name"></div>
+            <div><label class="fl">Phone / Email</label><input id="plContact" placeholder="01XXXXXXXXX"></div>
+          </div>
+          <div class="row">
+            <div><label class="fl">Service needed</label><input id="plService" placeholder="e.g. Inventory automation"></div>
+            <div><label class="fl">Opportunity value (৳)</label><input id="plValueIn" type="number" placeholder="150000"></div>
+            <div><label class="fl">Source</label><input id="plSource" placeholder="Referral / LinkedIn / Cold"></div>
+            <div style="flex:0 0 auto;display:flex;align-items:flex-end"><button class="btn" id="plAdd">Add Lead</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="t">🎯 Sales Pipeline</span></h3>
+          <div class="kanban" id="plBoard"></div>
+        </div>
+      </section>
+
+      <!-- ---------- ISLAMIC ---------- -->
+      <section class="page" id="page-islamic">
+        <div class="tabs" data-tabs="isl">
+          <button class="active" data-tab="quran">📖 কুরআন</button>
+          <button data-tab="hadith">📜 হাদীস</button>
+          <button data-tab="sahaba">🕌 সাহাবা</button>
+        </div>
+
+        <div class="tabpane active" id="isl-quran">
+          <div class="reader">
+            <div class="src" id="qSrc">—</div>
+            <div class="arabic" id="qArabic"></div>
+            <div class="bangla" id="qBangla"></div>
+            <div class="readerbar">
+              <div class="counter" id="qCount"></div>
+              <div style="display:flex;gap:8px">
+                <button class="btn ghost" id="qPrev">← আগের</button>
+                <button class="btn" id="qNext">পরের →</button>
+                <button class="btn navy" id="qRand">🎲 এলোমেলো</button>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:.78rem;color:var(--muted);margin-top:10px">
+            উৎস: Quran.com API — বাংলা অনুবাদ: তাওহীদ পাবলিকেশন
+          </p>
+        </div>
+
+        <div class="tabpane" id="isl-hadith">
+          <div class="reader">
+            <div class="src" id="hSrc">—</div>
+            <div class="bangla" id="hText" style="margin-top:14px"></div>
+            <div class="readerbar">
+              <div class="counter" id="hCount"></div>
+              <div style="display:flex;gap:8px">
+                <button class="btn ghost" id="hPrev">← আগের</button>
+                <button class="btn" id="hNext">পরের →</button>
+                <button class="btn navy" id="hRand">🎲 এলোমেলো</button>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:.78rem;color:var(--muted);margin-top:10px">
+            উৎস: সহীহ বুখারী · সহীহ মুসলিম · ইমাম নববীর ৪০ হাদীস
+          </p>
+        </div>
+
+        <div class="tabpane" id="isl-sahaba">
+          <div class="empty">
+            🕌 <strong>হায়াতুস সাহাবা</strong><br><br>
+            এই অংশের জন্য নির্ভরযোগ্য কোনো API পাওয়া যায়নি।<br>
+            হায়াতুস সাহাবা বইয়ের PDF দিলে এখানে যুক্ত করা হবে।<br>
+            <span style="font-size:.8rem">স্ট্রাকচার প্রস্তুত — শুধু কনটেন্ট বাকি।</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- NEWS ---------- -->
+      <section class="page" id="page-news">
+        <div class="tabs" data-tabs="nw">
+          <button class="active" data-tab="bd">🇧🇩 বাংলাদেশ</button>
+          <button data-tab="intl">🌍 আন্তর্জাতিক</button>
+          <button data-tab="tech">🤖 প্রযুক্তি / AI</button>
+        </div>
+        <div class="tabpane active" id="nw-bd"><div class="card" id="newsBD"></div></div>
+        <div class="tabpane" id="nw-intl"><div class="card" id="newsIntl"></div></div>
+        <div class="tabpane" id="nw-tech"><div class="card" id="newsTech"></div></div>
+        <p style="font-size:.78rem;color:var(--muted);margin-top:12px" id="newsMeta"></p>
+      </section>
+
+      <!-- ---------- IDEA BANK ---------- -->
+      <section class="page" id="page-ideas">
+        <div class="card" style="margin-bottom:16px">
+          <h3><span class="t">➕ নতুন আইডিয়া যোগ করুন</span></h3>
+          <div class="row">
+            <div><label class="fl">আইডিয়ার শিরোনাম</label><input id="idTitle" placeholder="সংক্ষেপে লিখুন"></div>
+            <div style="flex:0 0 210px"><label class="fl">ক্যাটাগরি</label>
+              <select id="idCat">
+                <option>অটোমেশন</option><option>ব্যবসা</option><option>প্রোডাক্ট</option>
+                <option>মার্কেটিং</option><option>ব্যক্তিগত</option>
+              </select></div>
+            <div style="flex:0 0 180px"><label class="fl">ব্যবসা</label>
+              <select id="idBiz">
+                <option>Nexa AI</option><option>Amanah</option><option>Sky View</option>
+                <option>APEX</option><option>সাধারণ</option>
+              </select></div>
+          </div>
+          <div class="row"><div><label class="fl">বিস্তারিত</label>
+            <textarea id="idBody" placeholder="আইডিয়াটি বিস্তারিত লিখুন — সমস্যা কী, সমাধান কী, কার জন্য"></textarea></div></div>
+          <button class="btn" id="idAdd">💡 আইডিয়া সংরক্ষণ করুন</button>
+        </div>
+
+        <div class="card">
+          <h3><span class="t">🗂️ সংরক্ষিত আইডিয়া</span>
+            <input id="idSearch" placeholder="🔍 খুঁজুন..." style="max-width:220px"></h3>
+          <div class="tabs" data-tabs="idf" style="margin-top:6px">
+            <button class="active" data-tab="all">সব</button>
+            <button data-tab="অটোমেশন">অটোমেশন</button>
+            <button data-tab="ব্যবসা">ব্যবসা</button>
+            <button data-tab="প্রোডাক্ট">প্রোডাক্ট</button>
+            <button data-tab="মার্কেটিং">মার্কেটিং</button>
+          </div>
+          <div id="ideaList"></div>
+        </div>
+      </section>
+
+      <!-- ---------- TODO ---------- -->
+      <section class="page" id="page-todo">
+        <div class="card" style="margin-bottom:16px">
+          <h3><span class="t">➕ Add Task</span>
+            <span style="font-size:.74rem;color:var(--muted);font-weight:400">Tasks come from ideas after study / analysis / R&amp;D</span></h3>
+          <div class="row">
+            <div><label class="fl">Task</label><input id="tdTitle" placeholder="What needs to be done"></div>
+            <div style="flex:0 0 150px"><label class="fl">Priority</label>
+              <select id="tdPri"><option value="high">High</option><option value="med" selected>Medium</option><option value="low">Low</option></select></div>
+            <div style="flex:0 0 170px"><label class="fl">Business</label>
+              <select id="tdBiz"><option>Nexa AI</option><option>Amanah</option><option>Sky View</option><option>APEX</option><option>Personal</option></select></div>
+            <div style="flex:0 0 160px"><label class="fl">Due date</label><input id="tdDue" type="date"></div>
+            <div style="flex:0 0 auto;display:flex;align-items:flex-end"><button class="btn" id="tdAdd">Add</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="t">📋 Task List</span><span class="counter" id="tdStats"></span></h3>
+          <div class="tabs" data-tabs="tdf">
+            <button class="active" data-tab="open">Open</button>
+            <button data-tab="done">Completed</button>
+            <button data-tab="all">All</button>
+          </div>
+          <div id="taskList"></div>
+        </div>
+      </section>
+
+      <!-- ---------- INVEST ---------- -->
+      <section class="page" id="page-invest">
+        <div class="grid g4" style="margin-bottom:18px">
+          <div class="card stat"><div class="lbl">মোট বিনিয়োগ</div><div class="val">৳২.২৭ কোটি</div><div class="sub">৪ প্রতিষ্ঠান</div></div>
+          <div class="card stat warn"><div class="lbl">CDDL বকেয়া</div><div class="val">৳১.৪৮ কোটি</div><div class="sub">outstanding</div></div>
+          <div class="card stat gold"><div class="lbl">জিয়ার অংশ (CDDL)</div><div class="val">৳৭৫ লক্ষ</div><div class="sub">বাকি ৳৬৪.৫ লক্ষ</div></div>
+          <div class="card stat navy"><div class="lbl">Sky View</div><div class="val">৳৬.৯৯ লক্ষ</div><div class="sub">৩টি প্রজেক্ট</div></div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <h3><span class="t">📊 প্রতিষ্ঠান অনুযায়ী বিনিয়োগ</span></h3>
+          <table>
+            <thead><tr><th>প্রতিষ্ঠান</th><th class="num">বিনিয়োগ (৳)</th><th class="num">বকেয়া (৳)</th><th>অবস্থা</th><th>বিস্তারিত</th></tr></thead>
+            <tbody>
+              <tr><td><strong>CDDL</strong> (পুরাতন ফান্ড)</td><td class="num">2,20,00,000</td><td class="num">1,48,04,000</td>
+                  <td><span class="tag y">চলমান</span></td><td><a href="cddl-ledger-dashboard.html" class="btn sm ghost">খুলুন →</a></td></tr>
+              <tr><td><strong>Sky View</strong> রিয়েল এস্টেট</td><td class="num">6,99,400</td><td class="num">—</td>
+                  <td><span class="tag g">সক্রিয়</span></td><td><a href="sky-view-dashboard.html" class="btn sm ghost">খুলুন →</a></td></tr>
+              <tr><td><strong>Amanah</strong> স্মার্ট লাইফ</td><td class="num">15,000</td><td class="num">—</td>
+                  <td><span class="tag g">লাইভ</span></td><td><a href="https://amanahsmart.com" target="_blank" class="btn sm ghost">সাইট →</a></td></tr>
+              <tr><td><strong>Nexa AI</strong> সলিউশনস</td><td class="num">—</td><td class="num">—</td>
+                  <td><span class="tag b">ডেভেলপমেন্ট</span></td><td><button class="btn sm ghost" data-goto="nexa">ড্যাশবোর্ড →</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3><span class="t">👥 CDDL অংশীদার অবস্থা</span></h3>
+          <table>
+            <thead><tr><th>নাম</th><th class="num">বিনিয়োগ</th><th class="num">মুনাফা</th><th class="num">বাকি</th><th>অবস্থা</th></tr></thead>
+            <tbody>
+              <tr><td>রানা</td><td class="num">—</td><td class="num">4,00,000</td><td class="num">0</td><td><span class="tag g">নিষ্পত্তি</span></td></tr>
+              <tr><td><strong>জিয়া</strong></td><td class="num">75,00,000</td><td class="num">4,00,000</td><td class="num">64,50,000</td><td><span class="tag y">বকেয়া</span></td></tr>
+              <tr><td>জাহিদ</td><td class="num">—</td><td class="num">3,00,000</td><td class="num">0</td><td><span class="tag g">নিষ্পত্তি</span></td></tr>
+              <tr><td>আবুল বাসার</td><td class="num">1,00,00,000</td><td class="num">4,00,000</td><td class="num">58,54,000</td><td><span class="tag y">বকেয়া</span></td></tr>
+              <tr><td>পারভেজ</td><td class="num">25,00,000</td><td class="num">—</td><td class="num">5,00,000</td><td><span class="tag y">বকেয়া</span></td></tr>
+              <tr><td>শাহজাহান</td><td class="num">20,00,000</td><td class="num">—</td><td class="num">20,00,000</td><td><span class="tag r">অপরিশোধিত</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ---------- SETTINGS ---------- -->
+      <section class="page" id="page-settings">
+        <div class="card" style="margin-bottom:16px">
+          <h3><span class="t">💾 ডেটা ব্যাকআপ</span></h3>
+          <p style="font-size:.87rem;color:var(--muted);line-height:1.7;margin-bottom:12px">
+            আপনার আইডিয়া, টাস্ক, প্রজেক্ট ও লিড — সব এই ব্রাউজারে (localStorage) সংরক্ষিত।
+            অন্য ডিভাইসে নিতে চাইলে Export করে ফাইলটি Import করুন।
+          </p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn" id="btnExport">⬇️ Export (JSON)</button>
+            <button class="btn ghost" id="btnImport">⬆️ Import</button>
+            <input type="file" id="fileImport" accept=".json" style="display:none">
+            <button class="btn danger" id="btnReset">🗑️ সব মুছুন</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <h3><span class="t">📚 কনটেন্ট সোর্স</span></h3>
+          <table>
+            <thead><tr><th>সেকশন</th><th>উৎস</th><th>অবস্থা</th></tr></thead>
+            <tbody>
+              <tr><td>কুরআন</td><td>Quran.com API — তাওহীদ পাবলিকেশন</td><td><span class="tag g">যাচাইকৃত</span></td></tr>
+              <tr><td>হাদীস</td><td>বুখারী · মুসলিম · নববী ৪০</td><td><span class="tag g">যাচাইকৃত</span></td></tr>
+              <tr><td>হায়াতুস সাহাবা</td><td>—</td><td><span class="tag y">সোর্স প্রয়োজন</span></td></tr>
+              <tr><td>বাংলাদেশ সংবাদ</td><td>প্রথম আলো RSS</td><td><span class="tag g">সক্রিয়</span></td></tr>
+              <tr><td>আন্তর্জাতিক</td><td>BBC বাংলা RSS</td><td><span class="tag g">সক্রিয়</span></td></tr>
+              <tr><td>প্রযুক্তি</td><td>TechCrunch RSS</td><td><span class="tag g">সক্রিয়</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3><span class="t">🔗 অন্যান্য ড্যাশবোর্ড</span></h3>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <a class="btn ghost" href="cddl-ledger-dashboard.html">💰 CDDL Ledger</a>
+            <a class="btn ghost" href="sky-view-dashboard.html">🏢 Sky View</a>
+            <a class="btn ghost" href="https://amanahsmart.com" target="_blank">🛒 Amanah Store</a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
-
