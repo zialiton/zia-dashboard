@@ -160,3 +160,90 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600
   .topbar{padding:12px 14px}
   .arabic{font-size:1.35rem;line-height:2.2}
 }
+
+/* ============================================================
+   HOME — hero, quick capture, KPI polish, shortcuts
+   ============================================================ */
+.mt16{margin-top:16px}
+
+/* ---- HERO ---- */
+.hero{
+  position:relative;overflow:hidden;border-radius:16px;margin-bottom:16px;
+  background:linear-gradient(120deg,#0b1e33 0%,#123f5e 55%,#0d5c46 100%);
+  color:#fff;padding:26px 28px;box-shadow:0 8px 26px rgba(11,30,51,.22)
+}
+.hero-glow{
+  position:absolute;width:340px;height:340px;right:-90px;top:-140px;border-radius:50%;
+  background:radial-gradient(circle,rgba(20,184,119,.42),transparent 68%);pointer-events:none
+}
+.hero-glow::after{
+  content:'';position:absolute;width:220px;height:220px;left:-150px;top:190px;border-radius:50%;
+  background:radial-gradient(circle,rgba(217,164,65,.30),transparent 70%)
+}
+.hero-in{position:relative;display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}
+.hero-left{min-width:250px;flex:1}
+.hero-date{font-size:.78rem;color:#8fe3c0;font-weight:700;letter-spacing:.4px}
+.hero-greet{font-size:1.72rem;margin:7px 0 5px;font-weight:700;line-height:1.3}
+.hero-sub{font-size:.93rem;color:#c8d8e8;line-height:1.7}
+.hero-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:20px;
+  background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);
+  font-size:.79rem;font-weight:600;backdrop-filter:blur(4px)
+}
+.chip.hot{background:rgba(220,38,38,.28);border-color:rgba(248,113,113,.45)}
+.chip.ok{background:rgba(20,184,119,.26);border-color:rgba(52,211,153,.45)}
+
+/* progress ring */
+.ring{position:relative;width:124px;height:124px;flex:0 0 auto}
+.ring svg{width:124px;height:124px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:9;stroke-linecap:round}
+.ring-bg{stroke:rgba(255,255,255,.16)}
+.ring-fg{stroke:#34d399;stroke-dasharray:326.7;stroke-dashoffset:326.7;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+.ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-txt b{font-size:1.5rem;line-height:1}
+.ring-txt span{font-size:.68rem;color:#a8c4d8;margin-top:4px}
+
+/* ---- QUICK CAPTURE ---- */
+.quickbar{
+  display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:9px 12px;margin-bottom:16px;box-shadow:0 1px 3px rgba(15,23,42,.05);flex-wrap:wrap
+}
+.qb-ico{font-size:1.1rem}
+.quickbar input{flex:1;min-width:170px;border:0;padding:8px 4px;font-size:.93rem}
+.quickbar input:focus{outline:none}
+
+/* ---- KPI ---- */
+.kpis .stat{cursor:pointer;transition:transform .16s,box-shadow .16s}
+.kpis .stat:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(15,23,42,.11)}
+.stat-top{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.stat-ico{
+  width:33px;height:33px;border-radius:9px;display:flex;align-items:center;
+  justify-content:center;font-size:1rem;flex:0 0 auto
+}
+.stat-ico.e{background:#d1fae5}.stat-ico.g{background:#fef3c7}
+.stat-ico.n{background:#dbeafe}.stat-ico.w{background:#fee2e2}
+.stat-top .lbl{margin:0}
+
+/* ---- Islamic cards ---- */
+.ayah-card{background:linear-gradient(160deg,#fbfefc,#f0f9f4);border-color:#d7ece1}
+.hadith-card{background:linear-gradient(160deg,#fdfcfa,#fbf6ec);border-color:#eadfc8}
+
+/* ---- Shortcuts ---- */
+.shortcuts{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px}
+.sc{
+  display:flex;flex-direction:column;gap:3px;padding:15px;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;text-decoration:none;color:var(--ink);
+  transition:.16s;box-shadow:0 1px 3px rgba(15,23,42,.05)
+}
+.sc:hover{transform:translateY(-3px);border-color:var(--emerald);box-shadow:0 10px 22px rgba(15,23,42,.1)}
+.sc span{font-size:1.4rem}
+.sc b{font-size:.92rem;margin-top:3px}
+.sc i{font-size:.76rem;color:var(--muted);font-style:normal}
+
+@media(max-width:640px){
+  .hero{padding:20px 18px}
+  .hero-greet{font-size:1.32rem}
+  .hero-in{justify-content:center;text-align:left}
+  .ring,.ring svg{width:104px;height:104px}
+}

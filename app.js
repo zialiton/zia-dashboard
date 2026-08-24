@@ -371,9 +371,91 @@
   });
 
   /* ============================================================
+     HOME — HERO
+     ============================================================ */
+  function greetWord(h) {
+    if (h < 5) return 'শুভ রাত্রি';
+    if (h < 12) return 'শুভ সকাল';
+    if (h < 16) return 'শুভ দুপুর';
+    if (h < 19) return 'শুভ বিকেল';
+    return 'শুভ সন্ধ্যা';
+  }
+
+  function renderHero() {
+    const now = new Date();
+    $('heroDate').textContent = now.toLocaleDateString('bn-BD',
+      { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    $('heroGreet').textContent = greetWord(now.getHours()) + ', জিয়া ভাই';
+
+    const today = new Date().toISOString().slice(0, 10);
+    const openT = S.tasks.filter(t => !t.done);
+    const doneToday = S.tasks.filter(t => t.done).length;
+    const high = openT.filter(t => t.pri === 'high').length;
+    const overdue = openT.filter(t => t.due && t.due < today).length;
+    const dueToday = openT.filter(t => t.due === today).length;
+
+    // subtitle
+    let sub;
+    if (!S.tasks.length && !S.ideas.length) {
+      sub = 'শুরু করুন — উপরের বক্সে প্রথম আইডিয়া বা টাস্ক লিখুন।';
+    } else if (!openT.length) {
+      sub = 'সব টাস্ক শেষ 🎉 নতুন কিছু যোগ করুন বা আইডিয়া ব্যাংক দেখুন।';
+    } else if (overdue) {
+      sub = `${overdue}টি টাস্কের সময় পেরিয়ে গেছে — আগে সেগুলো দেখুন।`;
+    } else if (high) {
+      sub = `${high}টি high-priority কাজ অপেক্ষা করছে। আজকের ফোকাস ঠিক করুন।`;
+    } else {
+      sub = `${openT.length}টি কাজ বাকি। ধীরে-সুস্থে এগিয়ে যান।`;
+    }
+    $('heroSub').textContent = sub;
+
+    // chips
+    const chips = [];
+    if (overdue) chips.push(`<span class="chip hot">⚠ ${overdue} overdue</span>`);
+    if (dueToday) chips.push(`<span class="chip">📅 ${dueToday} due today</span>`);
+    if (high) chips.push(`<span class="chip hot">🔥 ${high} high</span>`);
+    chips.push(`<span class="chip ok">✅ ${doneToday} completed</span>`);
+    chips.push(`<span class="chip">💡 ${S.ideas.length} ideas</span>`);
+    if (S.leads.length) chips.push(`<span class="chip">🎯 ${S.leads.length} leads</span>`);
+    $('heroChips').innerHTML = chips.join('');
+
+    // ring
+    const total = S.tasks.length;
+    const pct = total ? Math.round(doneToday / total * 100) : 0;
+    $('ringPct').textContent = pct + '%';
+    const C = 2 * Math.PI * 52;
+    $('ringFg').style.strokeDashoffset = String(C - (C * pct / 100));
+  }
+
+  /* quick capture */
+  function quickAdd(kind) {
+    const v = $('qInput').value.trim();
+    if (!v) { $('qInput').focus(); return; }
+    if (kind === 'idea') {
+      S.ideas.unshift({
+        id: uid(), title: v, cat: 'অটোমেশন', biz: 'Nexa AI',
+        body: '', ts: Date.now(), promoted: false
+      });
+    } else {
+      S.tasks.unshift({
+        id: uid(), title: v, pri: 'med', biz: 'Nexa AI',
+        due: '', done: false, ts: Date.now()
+      });
+    }
+    save(); $('qInput').value = '';
+    renderIdeas(); renderTasks(); renderHome();
+  }
+  $('qIdea').onclick = () => quickAdd('idea');
+  $('qTask').onclick = () => quickAdd('task');
+  $('qInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') quickAdd(e.shiftKey ? 'idea' : 'task');
+  });
+
+  /* ============================================================
      HOME
      ============================================================ */
   function renderHome() {
+    renderHero();
     const v = D.quran[dayNum % (D.quran.length || 1)];
     $('homeQuran').innerHTML = v ? `
       <div style="font-size:.76rem;color:var(--emerald);font-weight:700">${esc(v.surah)} — ${esc(v.key)}</div>

@@ -56,52 +56,85 @@
 
       <!-- ---------- HOME ---------- -->
       <section class="page active" id="page-home">
-        <div class="grid g4" style="margin-bottom:18px">
-          <div class="card stat">
-            <div class="lbl">Nexa · Active Projects</div>
+
+        <!-- HERO -->
+        <div class="hero">
+          <div class="hero-glow"></div>
+          <div class="hero-in">
+            <div class="hero-left">
+              <div class="hero-date" id="heroDate">—</div>
+              <h2 class="hero-greet" id="heroGreet">স্বাগতম</h2>
+              <p class="hero-sub" id="heroSub">—</p>
+              <div class="hero-chips" id="heroChips"></div>
+            </div>
+            <div class="hero-right">
+              <div class="ring" id="ringWrap">
+                <svg viewBox="0 0 120 120">
+                  <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+                  <circle class="ring-fg" cx="60" cy="60" r="52" id="ringFg"></circle>
+                </svg>
+                <div class="ring-txt">
+                  <b id="ringPct">0%</b>
+                  <span>আজকের কাজ</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK CAPTURE -->
+        <div class="quickbar">
+          <span class="qb-ico">⚡</span>
+          <input id="qInput" placeholder="দ্রুত লিখুন — আইডিয়া বা টাস্ক…" autocomplete="off">
+          <button class="btn sm" id="qIdea">💡 আইডিয়া</button>
+          <button class="btn sm navy" id="qTask">✅ Task</button>
+        </div>
+
+        <!-- KPI -->
+        <div class="grid g4 kpis">
+          <div class="card stat" data-goto="nexa">
+            <div class="stat-top"><span class="stat-ico e">🤖</span><span class="lbl">Nexa · Active Projects</span></div>
             <div class="val" id="kpiProjects">0</div>
             <div class="sub">automation builds</div>
           </div>
-          <div class="card stat gold">
-            <div class="lbl">Pipeline Value</div>
+          <div class="card stat gold" data-goto="pipeline">
+            <div class="stat-top"><span class="stat-ico g">🎯</span><span class="lbl">Pipeline Value</span></div>
             <div class="val" id="kpiPipeline">৳0</div>
             <div class="sub" id="kpiLeads">0 leads</div>
           </div>
-          <div class="card stat navy">
-            <div class="lbl">Open Tasks</div>
+          <div class="card stat navy" data-goto="todo">
+            <div class="stat-top"><span class="stat-ico n">✅</span><span class="lbl">Open Tasks</span></div>
             <div class="val" id="kpiTasks">0</div>
             <div class="sub" id="kpiTasksHigh">0 high priority</div>
           </div>
-          <div class="card stat warn">
-            <div class="lbl">Ideas Captured</div>
+          <div class="card stat warn" data-goto="ideas">
+            <div class="stat-top"><span class="stat-ico w">💡</span><span class="lbl">Ideas Captured</span></div>
             <div class="val" id="kpiIdeas">0</div>
             <div class="sub" id="kpiIdeasAuto">0 automation</div>
           </div>
         </div>
 
-        <div class="grid g2">
-          <!-- Daily Islamic -->
-          <div class="card">
+        <!-- ISLAMIC STRIP -->
+        <div class="grid g2 mt16">
+          <div class="card ayah-card">
             <h3><span class="t">📖 আজকের আয়াত</span>
               <button class="btn sm ghost" data-goto="islamic">সব দেখুন</button></h3>
             <div id="homeQuran"></div>
           </div>
-
-          <!-- Daily hadith -->
-          <div class="card">
+          <div class="card hadith-card">
             <h3><span class="t">📜 আজকের হাদীস</span>
               <button class="btn sm ghost" data-goto="islamic">সব দেখুন</button></h3>
             <div id="homeHadith"></div>
           </div>
+        </div>
 
-          <!-- Today tasks -->
+        <!-- WORK STRIP -->
+        <div class="grid g2 mt16">
           <div class="card">
-            <h3><span class="t">✅ Today's Tasks</span>
+            <h3><span class="t">✅ Today's Focus</span>
               <button class="btn sm ghost" data-goto="todo">Manage</button></h3>
             <div id="homeTasks"></div>
           </div>
-
-          <!-- Recent ideas -->
           <div class="card">
             <h3><span class="t">💡 সাম্প্রতিক আইডিয়া</span>
               <button class="btn sm ghost" data-goto="ideas">সব দেখুন</button></h3>
@@ -109,10 +142,19 @@
           </div>
         </div>
 
-        <div class="card" style="margin-top:16px">
+        <!-- NEWS -->
+        <div class="card mt16">
           <h3><span class="t">📰 আজকের শিরোনাম</span>
             <button class="btn sm ghost" data-goto="news">বিস্তারিত</button></h3>
           <div id="homeNews"></div>
+        </div>
+
+        <!-- SHORTCUTS -->
+        <div class="shortcuts mt16">
+          <a class="sc" href="cddl-ledger-dashboard.html"><span>💰</span><b>CDDL Ledger</b><i>৳২.২ কোটি ফান্ড</i></a>
+          <a class="sc" href="sky-view-dashboard.html"><span>🏢</span><b>Sky View</b><i>৩টি প্রজেক্ট</i></a>
+          <a class="sc" href="https://amanahsmart.com" target="_blank"><span>🛒</span><b>Amanah Store</b><i>amanahsmart.com</i></a>
+          <a class="sc" href="#" data-goto="nexa"><span>🤖</span><b>Nexa AI Board</b><i>automation pipeline</i></a>
         </div>
       </section>
 
