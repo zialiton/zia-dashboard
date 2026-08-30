@@ -2,22 +2,33 @@
    ZIA'S COMMAND CENTRE — cloud sync (Supabase)
    Offline-first: localStorage stays the working store.
    Cloud is the shared truth across laptop / mobile / iPad.
+
+   FIXED VERSION (3 bugs):
+   1) Sign-in now PULLS before it PUSHES, and refuses to upload
+      another account's data left in this browser (account guard).
+   2) A pull will never overwrite local edits that haven't been
+      pushed yet — it flushes the pending push first (dirty-guard).
+   3) Deletions no longer come back: the upsert no longer sends the
+      'deleted' column, so a row deleted on another device is never
+      resurrected.
    ============================================================ */
 window.CC_SYNC = (function () {
   'use strict';
 
   const URL_ = 'https://mtwkyzqjxncutazmqujl.supabase.co';
-  const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10d2t5enFqeG5jdXRhem1xdWpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxMjA3ODIsImV4cCI6MjA5MzY5Njc4Mn0.nWi6l_ZZC3yhpHpOdKM9gggo4gVlaXfnj3L-RZx_pzw';
+  const ANON = 'PASTE_YOUR_EXISTING_ANON_KEY_HERE'; // ← keep the same eyJ... key that is already in your current sync.js
 
-  const KINDS = { ideas: 'idea', tasks: 'task', projects: 'project', leads: 'lead' };
+  const KINDS  = { ideas: 'idea', tasks: 'task', projects: 'project', leads: 'lead' };
   const BUCKET = { idea: 'ideas', task: 'tasks', project: 'projects', lead: 'leads' };
-  const TOMB = 'zia_cc_deleted';   // ids deleted locally, waiting to be pushed
+  const TOMB   = 'zia_cc_deleted';   // ids deleted locally, waiting to be pushed
+  const OWNER  = 'zia_cc_owner';     // FIX 1: which user's data currently sits in this browser
 
   let sb = null;              // supabase client
   let user = null;            // logged-in user
   let hooks = {};             // { getState, setState, onStatus, onAuth }
   let pulling = false, pushing = false;
   let timer = null;
+  let pt = null;              // pending debounced push timer
 
   /* ---------- tombstones ---------- */
   const tombs = () => { try { return JSON.parse(localStorage.getItem(TOMB) || '[]'); } catch (e) { return []; } };
@@ -57,11 +68,26 @@ window.CC_SYNC = (function () {
     return sb;
   }
 
+  /* ---------- FIX 1: account guard ----------
+     If the data sitting in this browser belongs to a DIFFERENT user,
+     wipe the working store (and pending deletions) before syncing so
+     we never upload one account's items into another account. */
+  function guardAccount(u) {
+    let prev = null;
+    try { prev = localStorage.getItem(OWNER); } catch (e) {}
+    if (prev && prev !== u.id) {
+      hooks.setState({ ideas: [], tasks: [], projects: [], leads: [] });
+      try { localStorage.setItem(TOMB, '[]'); } catch (e) {}
+    }
+    try { localStorage.setItem(OWNER, u.id); } catch (e) {}
+  }
+
   function onSignedIn(u) {
     if (user && user.id === u.id) return;
     user = u;
     if (hooks.onAuth) hooks.onAuth(u);
-    syncNow();
+    guardAccount(u);          // FIX 1
+    syncNow();                // FIX 1: syncNow now pulls before it pushes
     if (timer) clearInterval(timer);
     timer = setInterval(() => { if (user) pull(); }, 60000);
   }
@@ -96,8 +122,11 @@ window.CC_SYNC = (function () {
           id: String(obj.id),
           user_id: user.id,
           kind: KINDS[bucket],
-          data: obj,
-          deleted: false
+          data: obj
+          // FIX 3: 'deleted' is intentionally NOT sent.
+          // New rows get the column default (false); existing rows keep
+          // whatever 'deleted' value the cloud already has, so an item
+          // deleted on another device is never brought back to life.
         });
       });
     });
@@ -107,6 +136,11 @@ window.CC_SYNC = (function () {
   /* ---------- PULL: cloud -> local (merge) ---------- */
   async function pull() {
     if (!user || pulling) return;
+
+    // FIX 2: flush any pending local edit BEFORE pulling, otherwise the
+    // incoming cloud copy would overwrite an edit that hasn't been saved yet.
+    if (pt) { clearTimeout(pt); pt = null; await push(); }
+
     pulling = true;
     try {
       const { data, error } = await sb.from('cc_items')
@@ -158,7 +192,7 @@ window.CC_SYNC = (function () {
           .update({ deleted: true }).in('id', t).eq('user_id', user.id);
         if (!error) clearTombs(t);
       }
-      // 2. upsert everything current
+      // 2. upsert everything current (without the 'deleted' column — see FIX 3)
       const rows = localRows();
       if (rows.length) {
         const { error } = await sb.from('cc_items').upsert(rows, { onConflict: 'id' });
@@ -170,21 +204,21 @@ window.CC_SYNC = (function () {
     } finally { pushing = false; }
   }
 
+  /* ---------- FIX 1: pull first, then push ---------- */
   async function syncNow() {
     if (!user) return;
     status('Syncing…', 'busy');
-    await push();
     await pull();
+    await push();
   }
 
   /* debounced push after local edits */
-  let pt = null;
   function markDirty(deletedId) {
     if (deletedId) addTomb(String(deletedId));
     if (!user) return;
     status('Saving…', 'busy');
     clearTimeout(pt);
-    pt = setTimeout(push, 900);
+    pt = setTimeout(() => { pt = null; push(); }, 900);
   }
 
   return {
