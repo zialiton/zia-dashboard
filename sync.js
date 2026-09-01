@@ -16,7 +16,7 @@ window.CC_SYNC = (function () {
   'use strict';
 
   const URL_ = 'https://mtwkyzqjxncutazmqujl.supabase.co';
-  const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10d2t5enFqeG5jdXRhem1xdWpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxMjA3ODIsImV4cCI6MjA5MzY5Njc4Mn0.nWi6l_ZZC3yhpHpOdKM9gggo4gVlaXfnj3L-RZx_pzw'; // ← keep the same eyJ... key that is already in your current sync.js
+  const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10d2t5enFqeG5jdXRhem1xdWpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxMjA3ODIsImV4cCI6MjA5MzY5Njc4Mn0.nWi6l_ZZC3yhpHpOdKM9gggo4gVlaXfnj3L-RZx_pzw'; // ← keep the same eyJ... key that is already in your current sync.js'
 
   const KINDS  = { ideas: 'idea', tasks: 'task', projects: 'project', leads: 'lead' };
   const BUCKET = { idea: 'ideas', task: 'tasks', project: 'projects', lead: 'leads' };
