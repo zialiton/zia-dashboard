@@ -337,10 +337,7 @@ select:focus-visible,textarea:focus-visible{
 }
 
 /* whatever app.js writes into #heroGreet now reads as a subheading */
-.hero-greet{
-  font-size:1.02rem;font-weight:800;
-  color:var(--cream);margin:0 0 6px;line-height:1.4;
-}
+.hero-greet{display:none}
 .hero-sub{font-size:.9rem;color:#C3D3C9;line-height:1.7;max-width:56ch;font-weight:500}
 
 .hero-chips{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
