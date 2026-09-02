@@ -36,6 +36,7 @@
     pipeline: ['Client Pipeline', 'Lead → Prospect → Client'],
     islamic: ['Islamic Reader', 'Quran · Hadith · Sahaba'],
     news: ['News', 'Bangladesh · International · Tech'],
+    email: ['Inbox', 'Unread mail · last 3 days'],
     ideas: ['Idea Bank', 'Automation & business ideas'],
     todo: ['To-Do List', 'Actionable tasks from ideas'],
     invest: ['Investments', 'CDDL · Sky View · Amanah · Nexa'],
