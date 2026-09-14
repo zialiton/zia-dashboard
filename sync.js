@@ -11,6 +11,10 @@
    3) Deletions no longer come back: the upsert no longer sends the
       'deleted' column, so a row deleted on another device is never
       resurrected.
+
+   WORK LOG (Sep 2026): a fifth bucket 'work' (kind = 'work') lives in
+   worklog.js as window.CC_WORK, not inside app.js state. sync.js reads
+   it with CC_WORK.get() and writes it back with CC_WORK.set().
    ============================================================ */
 window.CC_SYNC = (function () {
   'use strict';
@@ -18,8 +22,12 @@ window.CC_SYNC = (function () {
   const URL_ = 'https://mtwkyzqjxncutazmqujl.supabase.co';
   const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10d2t5enFqeG5jdXRhem1xdWpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxMjA3ODIsImV4cCI6MjA5MzY5Njc4Mn0.nWi6l_ZZC3yhpHpOdKM9gggo4gVlaXfnj3L-RZx_pzw'; // ← keep the same eyJ... key that is already in your current sync.js'
 
-  const KINDS  = { ideas: 'idea', tasks: 'task', projects: 'project', leads: 'lead' };
-  const BUCKET = { idea: 'ideas', task: 'tasks', project: 'projects', lead: 'leads' };
+  const KINDS  = { ideas: 'idea', tasks: 'task', projects: 'project', leads: 'lead', work: 'work' };
+  const BUCKET = { idea: 'ideas', task: 'tasks', project: 'projects', lead: 'leads', work: 'work' };
+
+  /* the work-log bucket is optional: if worklog.js is not loaded, ignore it */
+  const workGet = () => (window.CC_WORK ? window.CC_WORK.get() : []);
+  const workSet = arr => { if (window.CC_WORK) window.CC_WORK.set(arr); };
   const TOMB   = 'zia_cc_deleted';   // ids deleted locally, waiting to be pushed
   const OWNER  = 'zia_cc_owner';     // FIX 1: which user's data currently sits in this browser
 
@@ -77,6 +85,7 @@ window.CC_SYNC = (function () {
     try { prev = localStorage.getItem(OWNER); } catch (e) {}
     if (prev && prev !== u.id) {
       hooks.setState({ ideas: [], tasks: [], projects: [], leads: [] });
+      workSet([]);
       try { localStorage.setItem(TOMB, '[]'); } catch (e) {}
     }
     try { localStorage.setItem(OWNER, u.id); } catch (e) {}
@@ -114,7 +123,7 @@ window.CC_SYNC = (function () {
 
   /* ---------- flatten / rebuild ---------- */
   function localRows() {
-    const S = hooks.getState();
+    const S = Object.assign({}, hooks.getState(), { work: workGet() });
     const rows = [];
     Object.keys(KINDS).forEach(bucket => {
       (S[bucket] || []).forEach(obj => {
@@ -148,9 +157,9 @@ window.CC_SYNC = (function () {
         .eq('user_id', user.id);
       if (error) throw error;
 
-      const S = hooks.getState();
+      const S = Object.assign({}, hooks.getState(), { work: workGet() });
       const dead = new Set(tombs());
-      const merged = { ideas: [], tasks: [], projects: [], leads: [] };
+      const merged = { ideas: [], tasks: [], projects: [], leads: [], work: [] };
       const seen = new Set();
 
       // cloud rows first
@@ -172,8 +181,10 @@ window.CC_SYNC = (function () {
         merged[b].sort((a, c) => (c.ts || 0) - (a.ts || 0));
       });
 
+      const work = merged.work; delete merged.work;   // app.js only knows four buckets
       hooks.setState(merged);
-      const n = merged.ideas.length + merged.tasks.length + merged.projects.length + merged.leads.length;
+      workSet(work);
+      const n = merged.ideas.length + merged.tasks.length + merged.projects.length + merged.leads.length + work.length;
       status('Synced · ' + n + ' items', 'ok');
     } catch (e) {
       status('Sync failed: ' + (e.message || e), 'err');
