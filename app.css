@@ -715,3 +715,82 @@ td.num,th.num{text-align:right}
   .page{display:none}
   .page.active{display:block}
 }
+
+/* ---------- Work Log tab (worklog.js) ---------- */
+.wk-day{margin-top:14px}
+.wk-day:first-child{margin-top:4px}
+.wk-dayhead{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;
+  border-bottom:var(--bw) solid var(--ink);padding-bottom:6px;margin-bottom:8px}
+#briefOut{width:100%;line-height:1.5}
+
+/* ============================================================
+   ZIA OS v2 — "Executive Ink"  (appended Sep 2026)
+   Same Heritage Jewel system, calmer: ink top bar, one-row nav,
+   light card headers with a jewel accent bar, 4px hard shadow.
+   ============================================================ */
+:root{--sh:4px 4px 0 var(--ink);--sh-lg:6px 6px 0 var(--ink)}
+
+/* --- top bar: ink, one row, gold hairline --- */
+.sidebar{
+  background:var(--ink);color:var(--cream);
+  border-bottom:4px solid var(--gold);
+  padding:11px 26px 9px;gap:9px;
+}
+.brand h1{color:var(--cream)}
+.brand h1 span{background:var(--gold);color:var(--ink);border-color:var(--gold);box-shadow:none}
+.brand > span{color:var(--gold-lt);opacity:.85;border-left-color:rgba(255,252,245,.25)}
+
+.navlist{gap:3px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:2px}
+.navlist::-webkit-scrollbar{display:none}
+.navlist a{
+  background:transparent;border:2px solid transparent;color:var(--cream);
+  box-shadow:none;padding:7px 12px;font-size:.79rem;letter-spacing:.2px;
+  border-radius:var(--r);
+}
+.navlist a:hover{background:rgba(255,252,245,.10);transform:none;box-shadow:none;border-color:transparent;color:var(--cream)}
+.navlist a:active{transform:none;box-shadow:none}
+.navlist a.active,.navlist a.active:hover{background:var(--gold);color:var(--ink);border-color:var(--gold);box-shadow:none}
+.navlist a .ico{font-size:.82rem;opacity:.9}
+
+/* --- page title row --- */
+.topbar h2{background:transparent;color:var(--ink);padding:0;font-size:1.25rem;letter-spacing:-.01em;text-transform:none}
+.topbar .meta{opacity:.62}
+.syncbadge{box-shadow:none;border-width:2px;font-size:.66rem}
+
+/* --- cards: light header, jewel accent bar --- */
+.card h3{
+  background:var(--card);color:var(--ink);
+  padding:12px 16px 12px 22px;position:relative;
+  font-size:.86rem;letter-spacing:.6px;
+}
+.card h3::before{
+  content:'';position:absolute;left:0;top:0;bottom:calc(-1 * var(--bw));width:8px;
+  background:var(--emerald);
+}
+.hadith-card h3{background:var(--card)}
+.hadith-card h3::before,.card.teal h3::before{background:var(--teal)}
+.card.gold h3::before{background:var(--gold)}
+.card.plum h3::before{background:var(--plum)}
+.card.clay h3::before{background:var(--clay)}
+.card h3 .btn{box-shadow:2px 2px 0 var(--ink)}
+
+/* --- KPI tiles: white body, colour only on the top edge + icon --- */
+.stat{background:var(--card);border-top:7px solid var(--emerald)}
+.stat.gold{background:var(--card);border-top-color:var(--gold)}
+.stat.navy{background:var(--card);border-top-color:var(--teal)}
+.stat.warn{background:var(--card);border-top-color:var(--plum)}
+.stat .val{font-size:2.3rem}
+.stat .lbl{opacity:.75}
+.stat-ico{border-width:2px}
+
+/* --- quieter secondary chrome --- */
+.tabs button{box-shadow:none}
+.tabs button.active{box-shadow:2px 2px 0 var(--ink)}
+.item{box-shadow:none}
+
+/* nav must fit one row on a laptop: drop the emoji there, keep it on phones */
+@media(min-width:1001px){
+  .navlist a{padding:7px 11px;font-size:.78rem}
+  .navlist a .ico{display:none}
+}
