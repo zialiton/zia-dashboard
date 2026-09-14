@@ -39,6 +39,7 @@
     email: ['Inbox', 'Unread mail · last 3 days'],
     ideas: ['Idea Bank', 'Automation & business ideas'],
     todo: ['To-Do List', 'Actionable tasks from ideas'],
+    work: ['Work Log', 'What actually shipped · the record Claude & Hermes study'],
     invest: ['Investments', 'CDDL · Sky View · Amanah · Nexa'],
     settings: ['Settings', 'Backup & content sources']
   };
