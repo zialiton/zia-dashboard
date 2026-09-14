@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
-  <!-- ============ SIDEBAR ============ -->heroGreet
+  <!-- ============ SIDEBAR ============ -->
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <h1>ZIA <span>OS</span></h1>
@@ -32,6 +32,7 @@
       <div class="navgroup">Think &amp; Do</div>
       <a href="#" data-page="ideas"><span class="ico">💡</span> Idea Bank</a>
       <a href="#" data-page="todo"><span class="ico">✅</span> To-Do List</a>
+      <a href="#" data-page="work"><span class="ico">🛠️</span> Work Log</a>
 
       <div class="navgroup">Money</div>
       <a href="#" data-page="invest"><span class="ico">💰</span> Investments</a>
@@ -374,6 +375,47 @@
         </div>
       </section>
 
+      <!-- ---------- WORK LOG ---------- -->
+      <section class="page" id="page-work">
+        <div class="card" style="margin-bottom:16px">
+          <h3><span class="t">🛠️ Log what shipped</span>
+            <span class="counter" id="wkWeekNow"></span></h3>
+          <div class="row">
+            <div><label class="fl">What shipped (one line)</label><input id="wkTitle" placeholder="e.g. skyvre.com chatbot widget live on homepage"></div>
+            <div style="flex:0 0 150px"><label class="fl">Date</label><input id="wkDate" type="date"></div>
+            <div style="flex:0 0 130px"><label class="fl">Plan ID</label><input id="wkPlan" placeholder="P2.W7.T1"></div>
+          </div>
+          <div class="row">
+            <div style="flex:0 0 160px"><label class="fl">Business</label>
+              <select id="wkBiz"><option>Nexa AI</option><option>Sky View</option><option>Amanah</option><option>APEX</option><option>Personal</option></select></div>
+            <div style="flex:0 0 200px"><label class="fl">Block</label>
+              <select id="wkBlock">
+                <option>B1 Build</option><option>B2 Ship</option><option>B3 Docs</option>
+                <option>B4 Research</option><option>B7 Study</option><option>B8 Debug</option><option>Other</option>
+              </select></div>
+            <div style="flex:0 0 110px"><label class="fl">Hours</label><input id="wkHours" type="number" min="0" max="12" step="0.5" placeholder="2"></div>
+            <div><label class="fl">What I learned (one line — this becomes the post)</label><input id="wkLearned" placeholder="e.g. chunk size 500 beat 1000 on Bangla text"></div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+            <button class="btn" id="wkAdd">🛠️ Log it</button>
+            <label style="display:flex;gap:8px;align-items:center;font-size:.85rem;font-weight:700;cursor:pointer">
+              <input type="checkbox" id="wkShare" style="width:auto"> 📣 Shareable — can become a LinkedIn / Facebook post
+            </label>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="t">📜 Work list</span><span class="counter" id="wkStats"></span></h3>
+          <div class="tabs" data-tabs="wkf">
+            <button class="active" data-tab="week">This week</button>
+            <button data-tab="last">Last week</button>
+            <button data-tab="share">Shareable</button>
+            <button data-tab="all">All</button>
+          </div>
+          <div id="workList"></div>
+        </div>
+      </section>
+
       <!-- ---------- INVEST ---------- -->
       <section class="page" id="page-invest">
         <div class="grid g4" style="margin-bottom:18px">
@@ -466,6 +508,18 @@
         </div>
 
         <div class="card" style="margin-bottom:16px">
+          <h3><span class="t">🧠 AI Brief</span></h3>
+          <p style="font-size:.87rem;color:var(--muted);line-height:1.7;margin-bottom:12px">
+            One compact summary of the plan week, work log, tasks, ideas and pipeline —
+            paste it into Claude (Saturday B5 review) or send it to Hermes on Telegram.
+          </p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+            <button class="btn" id="btnBrief">📋 Copy AI brief</button>
+          </div>
+          <textarea id="briefOut" readonly style="display:none;min-height:220px;font-size:.78rem;font-family:ui-monospace,Menlo,Consolas,monospace"></textarea>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
           <h3><span class="t">📚 Content Sources</span></h3>
           <table>
             <thead><tr><th>Section</th><th>Source</th><th>Status</th></tr></thead>
@@ -498,6 +552,7 @@
 <script src="data.js"></script>
 <script src="sync.js"></script>
 <script src="app.js"></script>
-<script src="mail.js"></script>  
+<script src="mail.js"></script>
+<script src="worklog.js"></script>  
 </body>
 </html>
