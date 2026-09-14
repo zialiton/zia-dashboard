@@ -1,54 +1,9 @@
 {
  "bangladesh": [
   {
-   "title": "কিনে জিততে না পারলে বিক্রি করে লাভ করা যায় না: মাহমুদুন্নবী সোহাগ",
-   "link": "https://www.prothomalo.com/bangladesh/7ry27sdq14",
-   "desc": ""
-  },
-  {
-   "title": "আদাবরের খাল থেকে কিশোরীর মরদেহের খণ্ডিত দুই পা উদ্ধার",
-   "link": "https://www.prothomalo.com/bangladesh/crime/h4i63aciz4",
-   "desc": ""
-  },
-  {
-   "title": "হলান্ডের গোলে ১০ জনের সিটি জিতে নিল ম্যানচেস্টার ডার্বি",
-   "link": "https://www.prothomalo.com/sports/football/369w1mqqv2",
-   "desc": ""
-  },
-  {
-   "title": "‘বারবার মিথ্যা মামলা না দিয়ে আমাকে গুলি করে মেরে ফেলেন’",
-   "link": "https://www.prothomalo.com/video/bangladesh/u9fslvnbxc",
-   "desc": "বৈষম্যবিরোধী ছাত্র আন্দোলন চলাকালে ঢাকার আশুলিয়া থানার হত্যাচেষ্টা মামলায় মিষ্টি সুভাসকে গ্রেপ্তার দেখানো হয়েছে"
-  },
-  {
-   "title": "কার্যক্রম নিষিদ্ধ আ.লীগ নেতার সহায়তায় চক্ষুশিবির, স্বেচ্ছাসেবক দল নেতার পদ স্থগিত",
-   "link": "https://www.prothomalo.com/bangladesh/district/91yjea847o",
-   "desc": ""
-  },
-  {
-   "title": "সৈয়দ মুজতবা আলী শুধু রম্যলেখক নন",
-   "link": "https://www.prothomalo.com/onnoalo/treatise/69k2d7sad7",
-   "desc": ""
-  },
-  {
-   "title": "মিরপুরে ‘হুর’-এর আউটলেট উদ্বোধন",
-   "link": "https://www.prothomalo.com/bangladesh/uhub94t3pv",
-   "desc": ""
-  },
-  {
-   "title": "মাওলানা ফারুকী হত্যা মামলায় অভিযোগ গঠনের শুনানি পেছাল",
-   "link": "https://www.prothomalo.com/bangladesh/crime/loove16pqq",
-   "desc": ""
-  },
-  {
-   "title": "হুমকি দিয়ে ট্রাইব্যুনালের বিচার বাধাগ্রস্ত করা যাবে না: চিফ প্রসিকিউটর",
-   "link": "https://www.prothomalo.com/bangladesh/zfi0pv8kn2",
-   "desc": ""
-  },
-  {
-   "title": "বাংলাদেশ মেডিক্যাল বিশ্ববিদ্যালয়ে বিভিন্ন বিভাগে শিক্ষক নিয়োগ, পদ ১৮",
-   "link": "https://www.prothomalo.com/chakri/00fl1dnqnz",
-   "desc": ""
+   "title": "তারকা, প্রিমিয়ার আর দর্শকের ভিড়ে জমে উঠেছে টরন্টো",
+   "link": "https://www.prothomalo.com/entertainment/world-cinema/3vrde4kpg1",
+   "desc": "একদিকে নতুন ছবির ওয়ার্ল্ড প্রিমিয়ার, অন্যদিকে তারকাদের পদচারণ আর সিনেমা নিয়ে জমজমাট আলোচনা, কয়েক দিনের জন্য টরন্টোর প্রাণকেন্দ্র যেন শুধুই চলচ্চিত্র।"
   }
  ],
  "international": [
@@ -105,6 +60,26 @@
  ],
  "tech": [
   {
+   "title": "Insight Partners’ Deven Parekh on why the firm is diversifying while everyone else bets the farm on OpenAI and Anthropic",
+   "link": "https://techcrunch.com/2026/09/13/insight-partners-devin-parekh-on-why-the-firm-is-diversifying-while-everyone-else-bets-the-farm-on-openai-and-anthropic/",
+   "desc": "Insight Partners' Devin Parekh opens up about losing Legora to General Catalyst, why he's fine holding stakes in rival AI labs, and why — even as everyone else piles into OpenAI and Anthropic — his $90 billion firm is deliberately staying diversified."
+  },
+  {
+   "title": "Larry Ellison cancels $7.5 billion sale of Oracle stock",
+   "link": "https://techcrunch.com/2026/09/13/larry-ellison-cancels-7-5-billion-sale-of-oracle-stock/",
+   "desc": "Oracle had previously disclosed that Ellison planned to sell 50 million shares worth around $7.5 billion."
+  },
+  {
+   "title": "The 9 buzziest startups from Y Combinator’s latest Demo Day, according to VCs",
+   "link": "https://techcrunch.com/2026/09/13/the-9-buzziest-startups-from-y-combinators-latest-demo-day-according-to-vcs/",
+   "desc": "From floating reactors to brain chips: VCs picked their favorite YC startups from the summer batch."
+  },
+  {
+   "title": "What’s behind the AI industry’s latest warnings of doom?",
+   "link": "https://techcrunch.com/2026/09/13/whats-behind-the-ai-industrys-latest-warnings-of-doom/",
+   "desc": "On Equity, we discussed the AI industry's latest debate about whether it poses an existential threat to humanity."
+  },
+  {
    "title": "Obama urges Democrats to have a ‘clear plan’ for AI safeguards",
    "link": "https://techcrunch.com/2026/09/13/obama-urges-democrats-to-have-a-clear-plan-for-ai-safeguards/",
    "desc": "Obama recently said that Democrats need to make artificial intelligence one of their “central agendas” and “have a very clear plan” to address concerns around the technology’s economic impact and safety."
@@ -133,27 +108,7 @@
    "title": "Anthropic CEO outlines plan to slow AI development",
    "link": "https://techcrunch.com/2026/09/12/anthropic-ceo-outlines-plan-to-pace-the-frontier/",
    "desc": "Anthropic's Dario Amodei and OpenAI's Sam Altman seem to agree that it's time to \"pace the frontier.\" What would that actually look like?"
-  },
-  {
-   "title": "Tesla says it will finally unveil the second generation Roadster on October 1",
-   "link": "https://techcrunch.com/2026/09/12/tesla-says-it-will-finally-unveil-the-second-generation-roadster-on-october-1/",
-   "desc": "Tesla’s halo sports car was first announced in November 2017."
-  },
-  {
-   "title": "Revolut confirms customer data breach through fake government requests",
-   "link": "https://techcrunch.com/2026/09/12/revolut-confirms-customer-data-breach-through-fake-government-requests/",
-   "desc": "Revolut said it notified affected customers and alerted the relevant government agency, law enforcement, and financial regulators."
-  },
-  {
-   "title": "Mecka AI nears $500M valuation in Sequoia-led deal amid rush for robot training data",
-   "link": "https://techcrunch.com/2026/09/11/mecka-ai-nears-500m-valuation-in-sequoia-led-deal-amid-rush-for-robot-training-data/",
-   "desc": "The round for the two-year-old startup is coming together months after Mecka announced its Series A."
-  },
-  {
-   "title": "Khosla Ventures is opening a New York office this fall — its first outpost outside Sand Hill Road",
-   "link": "https://techcrunch.com/2026/09/11/khosla-ventures-is-opening-a-new-york-office-this-fall-its-first-outpost-outside-sand-hill-road/",
-   "desc": "\"It's actually allegedly being built out now,\" said Rabois, who has clearly dealt with a missed construction timeline or two."
   }
  ],
- "_updated": "14 Sep 2026, 12:00 AM"
+ "_updated": "14 Sep 2026, 06:00 AM"
 }
