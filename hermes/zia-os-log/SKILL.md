@@ -1,6 +1,6 @@
 ---
 name: zia-os-log
-description: Save Zia's finished work or a new idea into ZIA OS (Work Log / Idea Bank). Use when Zia sends /work, /idea, "log:", "idea:", or asks to save something he did or thought of.
+description: ALWAYS use this skill (not personal-dashboard-architecture) when Zia sends "log:", "work:", "idea:", mentions ZIA OS work log or idea bank, or asks to save work he did or an idea. Polishes his note into English, shows a preview, and after OK saves it with python3 ~/zia_os_add.py. Never answer with JavaScript or localStorage code.
 ---
 
 # ZIA OS logger
